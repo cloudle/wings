@@ -1,12 +1,14 @@
 import {resolve, } from 'path';
 import { v4 as uuid, } from 'uuid';
-import { requireModule, getEjsTemplate, } from './helper';
+import * as wingsHelper from './helper';
+
+const { requireModule, getEjsTemplate, } = wingsHelper;
 
 export const extractGlobalModules = () => {
 	const wingsConfig = requireModule('wings.config.js') || {},
 		appJson = requireModule('app.json') || defaultAppJson,
 		buildJson = requireModule('wings/build.json'),
-		modules = { wingsConfig, appJson, buildJson, },
+		modules = { wingsConfig, wingsHelper, appJson, buildJson, },
 		extraModules = wingsConfig.resolves || {},
 		globalModuleMap = {
 			chalk: 'node_modules/chalk',
@@ -38,7 +40,7 @@ const defaultWingsConfig = {
 	optimizeMode: () => !!process.env.OPTIMIZE,
 	buildId: uuid,
 	output: resolve(process.cwd(), 'wings'),
-	ejsTemplate: requireModule('index.ejs', false),
+	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
 	publicPath: '/',
 	webpackMiddleWares: [],

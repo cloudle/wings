@@ -1,7 +1,7 @@
 .idea
 .dist
+tags
 node_modules
-
 
 # Project exclude paths
 /dist/

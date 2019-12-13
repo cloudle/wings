@@ -1,6 +1,6 @@
 import { resolve, } from 'path';
 import { isArray, } from 'lodash';
-import { guessEntry, } from '../utils/helper';
+import { guessEntry, moduleExist, } from '../utils/helper';
 
 const hot = [
 	'react-hot-loader/patch',
@@ -18,7 +18,7 @@ function getEntries(configuredEntry) {
 
 export const defaultWebpackMiddleware = (config, globals) => {
 	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, } = globals,
-		{ entries, output,  publicPath, ejsTemplate, htmlOptions, env: getEnv, } = wingsConfig,
+		{ entries, output, publicPath, ejsTemplate, htmlOptions, env: getEnv, } = wingsConfig,
 		appEntries = getEntries(entries),
 		env = getEnv(),
 		isProduction = env === 'production';
