@@ -46,7 +46,7 @@ export const moduleExist = (aliases) => {
 	aliases = ensureArray(aliases);
 
 	for (let i = 0; i < aliases.length; i += 1) {
-		const searchPath = resolve(process.cwd(), aliases[i]);
+		const searchPath = resolve(process.cwd(), 'node_modules', aliases[i]);
 
 		if (!existsSync(searchPath)) {
 			return false;

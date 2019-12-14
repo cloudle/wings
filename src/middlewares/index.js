@@ -1,2 +1,2 @@
-export * from './webpack';
-export * from './devServer';
+export * from './webpackConfig';
+export * from './devConfig';

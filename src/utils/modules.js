@@ -13,6 +13,7 @@ export const extractGlobalModules = () => {
 		globalModuleMap = {
 			chalk: 'node_modules/chalk',
 			webpack: 'node_modules/webpack',
+			express: 'node_modules/express',
 			babelLoader: 'node_modules/babel-loader',
 			progressBarPlugin: 'node_modules/progress-bar-webpack-plugin',
 			htmlPlugin: 'node_modules/html-webpack-plugin',
@@ -34,17 +35,18 @@ export const extractGlobalModules = () => {
 };
 
 const defaultWingsConfig = {
+	isProduction: (env) => env === 'production',
 	env: () => process.env.ENV || 'development',
 	host: () => process.env.HOST || 'localhost',
 	port: () => process.env.PORT || 3000,
 	optimizeMode: () => !!process.env.OPTIMIZE,
 	buildId: uuid,
-	output: resolve(process.cwd(), 'wings'),
+	output: resolve(process.cwd()),
 	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
 	publicPath: '/',
-	webpackMiddleWares: [],
-	devServerMiddleWares: [],
+	webpackConfigs: [],
+	devConfigs: [],
 };
 
 const defaultAppJson = {

@@ -1,5 +1,5 @@
 
-export const defaultDevServerMiddleware = (config, globals) => {
+export const defaultDevConfigMiddleware = (config, globals) => {
 	const { wingsConfig, } = globals,
 		{ publicPath, port: getPort, optimizeMode: getOptimizeMode, } = wingsConfig,
 		port = getPort(),

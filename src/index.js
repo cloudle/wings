@@ -1,23 +1,22 @@
 import { fork, } from 'child_process';
-import { defaultWebpackMiddleware, defaultDevServerMiddleware, } from './middlewares';
-import { extractGlobalModules } from './utils';
+import { defaultWebpackConfigMiddleware, defaultDevConfigMiddleware, } from './middlewares';
+import { extractGlobalModules, } from './utils';
+import { createDevServer, } from './utils/server';
 
 function run() {
 	const globalModules = extractGlobalModules(),
-		{ wingsConfig, webpack, devServer, babelLoader } = globalModules,
-		{ webpackMiddleWares, devServerMiddleWares, host: getHost, port: getPort, } = wingsConfig,
+		{ wingsConfig, webpack, express, devServer, babelLoader } = globalModules,
+		{ webpackConfigs, devConfigs, host: getHost, port: getPort, } = wingsConfig,
 		host = getHost(),
 		port = getPort();
 
-	console.log(babelLoader);
+	webpackConfigs.unshift(defaultWebpackConfigMiddleware);
+	devConfigs.unshift(defaultDevConfigMiddleware);
 
-	webpackMiddleWares.unshift(defaultWebpackMiddleware);
-	devServerMiddleWares.unshift(defaultDevServerMiddleware);
+	let webpackConfig, devConfig;
 
-	let webpackConfig, devServerConfig;
-
-	for (let i = 0; i < webpackMiddleWares.length; i += 1) {
-		const currentMiddleware = webpackMiddleWares[i],
+	for (let i = 0; i < webpackConfigs.length; i += 1) {
+		const currentMiddleware = webpackConfigs[i],
 			nextConfig = currentMiddleware(webpackConfig, globalModules);
 
 		if (nextConfig) {
@@ -27,24 +26,25 @@ function run() {
 		}
 	}
 
-	for (let i = 0; i < devServerMiddleWares.length; i += 1) {
-		const currentMiddleware = devServerMiddleWares[i],
-			nextConfig = currentMiddleware(devServerConfig, globalModules);
+	for (let i = 0; i < devConfigs.length; i += 1) {
+		const currentMiddleware = devConfigs[i],
+			nextConfig = currentMiddleware(devConfig, globalModules);
 
 		if (nextConfig) {
-			devServerConfig = nextConfig;
+			devConfig = nextConfig;
 		} else {
 			break;
 		}
 	}
 
-	const compiler = webpack(webpackConfig);
-	const developmentServer = new devServer(compiler, devServerConfig);
+	const compiler = webpack(webpackConfig),
+		developmentServer = createDevServer(globalModules, compiler, devConfig);
+
 	developmentServer.listen(port, host, (error, result) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log('Server ready!');
+			console.log('Server ready!', host, port);
 		}
 	});
 }
