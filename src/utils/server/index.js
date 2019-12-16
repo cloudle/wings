@@ -14,8 +14,7 @@ export const createDevServer = (globals, compiler, middlewareOptions) => {
 		}));
 
 		server.use(hotMiddleware(compiler, {
-			reload: true,
-			// path: `/__webpack_hmr`,
+			log: false,
 		}));
 	}
 

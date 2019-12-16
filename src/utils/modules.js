@@ -47,6 +47,10 @@ const defaultWingsConfig = {
 	publicPath: '/',
 	webpackConfigs: [],
 	devConfigs: [],
+	hotOptions: { /* <- detailed config: https://github.com/webpack-contrib/webpack-hot-middleware */
+		reload: true,
+		quiet: true,
+	},
 };
 
 const defaultAppJson = {

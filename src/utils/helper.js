@@ -1,6 +1,6 @@
 import { resolve, } from 'path';
 import { existsSync, } from 'fs';
-import { isArray, } from 'lodash';
+import { isArray, isEmpty, } from 'lodash';
 
 function ensureArray(value) {
 	if (isArray(value)) {
@@ -8,6 +8,14 @@ function ensureArray(value) {
 	}
 
 	return [value];
+}
+
+export function optionsToQueryString(options) {
+	if (isEmpty(options)) {
+		return '';
+	}
+
+	return Object.keys(options).reduce((acc, next) => `${acc}${next}=${options[next]}&`, '?').slice(0, -1);
 }
 
 export const requireModule = (directions, req = true) => {

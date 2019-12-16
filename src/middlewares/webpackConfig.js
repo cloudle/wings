@@ -1,6 +1,6 @@
 import { resolve, } from 'path';
 import { isArray, } from 'lodash';
-import { guessEntry, moduleExist, } from '../utils/helper';
+import { guessEntry, moduleExist, optionsToQueryString, } from '../utils/helper';
 
 function getEntries(configuredEntry) {
 	if (configuredEntry) {
@@ -12,13 +12,14 @@ function getEntries(configuredEntry) {
 
 export const defaultWebpackConfigMiddleware = (config, globals) => {
 	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, } = globals,
-		{ entries, output, publicPath, ejsTemplate, htmlOptions, isProduction: checkProduction, env: getEnv, } = wingsConfig,
+		{ entries, output, publicPath, ejsTemplate, htmlOptions, hotOptions, isProduction: checkProduction, env: getEnv, } = wingsConfig,
 		appEntries = getEntries(entries),
 		env = getEnv(),
 		isProduction = checkProduction(env),
 		conditionalPlugins = isProduction ? [] : [new webpack.HotModuleReplacementPlugin()],
 		reactHotReloadAvailable = moduleExist('react-hot-loader'),
-		hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', 'webpack-hot-middleware/client'),
+		hotQueryString = optionsToQueryString(hotOptions),
+		hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`),
 		hot = [hotMiddlewareClientSrc],
 		babelPlugins = [];
 
