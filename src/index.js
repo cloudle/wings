@@ -1,7 +1,7 @@
-import { fork, } from 'child_process';
 import { defaultWebpackConfigMiddleware, defaultDevConfigMiddleware, } from './middlewares';
 import { extractGlobalModules, } from './utils';
 import { createDevServer, } from './utils/server';
+import './commands';
 
 function run() {
 	const globalModules = extractGlobalModules(),
@@ -49,4 +49,13 @@ function run() {
 	});
 }
 
-run();
+function parseOptions() {
+	const { _, ...otherArgs } = parseArgs(process.argv.slice(2));
+
+	console.log(_, otherArgs);
+}
+
+// const argv = yargs.usage('usage: $0 <command>')
+// 	.command()
+// run();
+// console.log(parseArgs(process.argv.slice(2)));

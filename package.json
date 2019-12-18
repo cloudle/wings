@@ -28,7 +28,8 @@
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-react": "^7.7.4",
     "chokidar": "^3.3.0",
-    "invalidate-module": "^1.0.0"
+    "invalidate-module": "^1.0.0",
+    "yargs": "^15.0.2"
   },
   "dependencies": {
     "@babel/cli": "^7.7.5",
@@ -49,7 +50,6 @@
     "webpack": "^4.41.2",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.9.0",
-    "webpack-hot-middleware": "^2.25.0",
-    "yargs-parser": "^16.1.0"
+    "webpack-hot-middleware": "^2.25.0"
   }
 }
