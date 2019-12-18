@@ -1,22 +1,32 @@
 {
-  "name": "@wings/cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "babel-node hot.js",
-    "build": "babel ./src --out-dir ./dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "wings-cli",
+  "version": "0.1.01",
+  "description": "CLI tool that accelerate Node/UI development",
+  "keywords": [],
+  "author": "Cloud Le",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudle/wings"
   },
+  "main": "index.js",
   "bin": {
     "wings": "index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "start": "babel-node hot.js",
+    "build": "babel ./src --out-dir ./dist",
+    "release": "npm run build && npm publish",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist",
+    "index.js",
+    "index.ejs"
+  ],
   "devDependencies": {
-    "@babel/preset-react": "^7.7.4",
     "@babel/preset-env": "^7.7.6",
+    "@babel/preset-react": "^7.7.4",
     "chokidar": "^3.3.0",
     "invalidate-module": "^1.0.0"
   },
