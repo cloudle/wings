@@ -1,10 +1,18 @@
-function func(yargs) {
-
-}
-
 export default {
-	name: 'inject',
-	description: 'inject boilerplate/template to existing project',
-	func,
-	usage: 'usage: $0 create <item> [options]',
+	command: 'inject',
+	desc: 'add [boilerplate|template] to existing project',
+	// usage: 'usage: $0 create <item> [options]',
+	builder: (yargs) => {
+		const argv = yargs.command({
+			command: 'project',
+			desc: 'inject a project',
+			handler: () => {
+				console.log('inner command');
+			},
+		}).wrap(null).argv;
+
+		if (argv._.length < 2) {
+			yargs.showHelp();
+		}
+	},
 };

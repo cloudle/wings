@@ -1,10 +1,15 @@
 import yargs from 'yargs';
+import defaultCommand from './default';
 import injectCommand from './inject';
 
-const cliInstance = yargs.usage('usage: $0 <command>');
+const cliInstance = yargs.usage('usage: $0 <command>')
+	.alias('h', 'help')
+	.alias('v', 'version');
 
-[injectCommand].forEach(({ name, description, builder }) => {
-	cliInstance.command(name, description, builder);
+[ defaultCommand,
+	injectCommand,
+].forEach((options) => {
+	cliInstance.command(options);
 });
 
-cliInstance.argv;
+cliInstance.help().argv;
