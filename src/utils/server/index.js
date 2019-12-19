@@ -1,7 +1,7 @@
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 
-export const createDevServer = (globals, compiler, middlewareOptions) => {
+export const createDevServer = (globals, compiler, devOptions) => {
 	const { wingsConfig, webpack, express } = globals,
 		{ ejsTemplate, publicPath, isProduction: checkProduction, env: getEnv, } = wingsConfig,
 		env = getEnv(),
@@ -9,9 +9,7 @@ export const createDevServer = (globals, compiler, middlewareOptions) => {
 		server = express();
 
 	if (!isProduction) {
-		server.use(devMiddleware(compiler, {
-			publicPath,
-		}));
+		server.use(devMiddleware(compiler, devOptions));
 
 		server.use(hotMiddleware(compiler, {
 			log: false,
