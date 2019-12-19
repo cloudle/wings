@@ -4,9 +4,11 @@ const path = require('path'),
 	invalidate = require('invalidate-module');
 
 chokidar.watch('./src', { ignoreInitial: true }).on('all', (event, filename) => {
-	console.log(chalk.magenta('hot code reload'), chalk.green(filename), 'updated.');
+	// console.log(chalk.magenta('hot code reload'), chalk.green(filename), 'updated.');
 	invalidate(path.resolve(filename));
-	require('./src/index');
+	const consoleApp = require('./src/console');
+	consoleApp.increase();
+	consoleApp.update();
 });
 
-require('./src/index');
+require('./src/console').update();
