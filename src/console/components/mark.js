@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Color, Text, } from 'ink';
+import { colors, consoleStrings, } from '../utils';
 
 type Props = {
 	color?: String,
@@ -8,11 +9,16 @@ type Props = {
 function Mark(props: Props) {
 	const { color, } = props;
 
-	return <Color hex={color}>｢wings｣ </Color>;
+	return <Color hex={color}>
+		{consoleStrings.prefix}
+		{consoleStrings.alias}
+		{consoleStrings.suffix}
+		{' '}
+	</Color>;
 }
 
 Mark.defaultProps = {
-	color: '#4f535a',
+	color: colors.gray,
 };
 
 export default Mark;

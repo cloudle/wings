@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, Box, Text, Color, } from 'ink';
-import Spinner from 'ink-spinner';
 
 import Provider from './components/provider';
-import Mark from './components/mark';
-import { connect, } from './utils';
+import WingsInfo from './components/wingsInfo';
+import DevelopmentServer from './components/developmentServer';
+import { connect, colors, } from './utils';
 import { appStore, } from './store';
 import { useStdout, } from './hooks';
 import * as appActions from './store/appAction';
@@ -18,16 +18,11 @@ const App = (props: Props) => {
 		stdout = useStdout();
 
 	return <Box flexDirection="column">
-		<Box>
-			<Mark/>
-			<Spinner type="dots"/>
-			<Color hex="#e26a72">
-				{' '}counter: {counter}
-			</Color>
-		</Box>
-		<Box>
-			<Color hex="#61AEEF">ef</Color>
-		</Box>
+		<WingsInfo/>
+		<DevelopmentServer/>
+		<Color hex="#e26a72">
+			{counter}
+		</Color>
 	</Box>;
 };
 
