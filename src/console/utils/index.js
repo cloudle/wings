@@ -17,5 +17,13 @@ export const consoleStrings = {
 };
 
 export const sizes = {
-	groupTitle: 24,
+	groupTitle: 22,
+};
+
+export const iStyles = {
+	titleContainer: {
+		justifyContent: 'flex-end',
+		width: sizes.groupTitle,
+		paddingRight: 1,
+	}
 };

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Color, Text, } from 'ink';
 import Spinner from 'ink-spinner';
-import { colors, sizes, consoleStrings, } from '../utils';
+
+import { colors, sizes, iStyles, consoleStrings, } from '../utils';
 
 type Props = {
 
@@ -9,12 +10,9 @@ type Props = {
 
 function DevelopmentServer(props: Props) {
 	return <Box>
-		<Box width={sizes.groupTitle}>
+		<Box {...iStyles.titleContainer}>
 			<Color hex={colors.gray}>
-				{consoleStrings.prefix}
-				Development Server
-				{consoleStrings.suffix}
-				{' '}
+				Development Server:
 			</Color>
 		</Box>
 		<Spinner type="dots"/>

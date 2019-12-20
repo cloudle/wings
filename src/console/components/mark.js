@@ -7,11 +7,11 @@ type Props = {
 };
 
 function Mark(props: Props) {
-	const { color, } = props;
+	const { color, children, } = props;
 
 	return <Color hex={color}>
 		{consoleStrings.prefix}
-		{consoleStrings.alias}
+		{children || consoleStrings.alias}
 		{consoleStrings.suffix}
 		{' '}
 	</Color>;

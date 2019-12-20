@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Color, Text, } from 'ink';
-import { colors, sizes, consoleStrings, } from '../utils';
+
+import { colors, sizes, iStyles, consoleStrings, } from '../utils';
 import packageInfo from '../../../package.json';
 
 type Props = {
@@ -9,13 +10,16 @@ type Props = {
 
 function WingsInfo(props: Props) {
 	return <Box>
-		<Box width={sizes.groupTitle}>
+		<Box {...iStyles.titleContainer}>
 			<Color hex={colors.gray}>
-				{consoleStrings.prefix}
-				<Color hex={colors.purple}>wings@{packageInfo.version}</Color>
-				{consoleStrings.suffix}
-				{' '}
+				{/*{consoleStrings.prefix}*/}
+				<Color hex={colors.purple}>wings cli</Color>
+				<Color hex={colors.gray}>:</Color>
+				{/*{consoleStrings.suffix}*/}
 			</Color>
+		</Box>
+		<Box>
+			<Color hex={colors.gray}>version@{packageInfo.version}</Color>
 		</Box>
 	</Box>;
 }

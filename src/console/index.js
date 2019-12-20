@@ -4,6 +4,7 @@ import { render, Box, Text, Color, } from 'ink';
 import Provider from './components/provider';
 import WingsInfo from './components/wingsInfo';
 import DevelopmentServer from './components/developmentServer';
+import NodeServer from './components/nodeServer';
 import { connect, colors, } from './utils';
 import { appStore, } from './store';
 import { useStdout, } from './hooks';
@@ -19,6 +20,7 @@ const App = (props: Props) => {
 
 	return <Box flexDirection="column">
 		<WingsInfo/>
+		<NodeServer/>
 		<DevelopmentServer/>
 		<Color hex="#e26a72">
 			{counter}
