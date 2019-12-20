@@ -30,13 +30,21 @@
     "chokidar": "^3.3.0",
     "invalidate-module": "^1.0.0",
     "prop-types": "^15.7.2",
-    "yargs": "^15.0.2"
+    "yargs": "^15.0.2",
+    "eslint": "^5.3.0",
+    "babel-eslint": "^10.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.11.0",
+    "eslint-plugin-flowtype": "^3.0.0",
+    "eslint-config-airbnb": "^17.1.0"
   },
   "dependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/preset-flow": "^7.7.4",
     "babel-loader": "^8.0.6",
     "chalk": "^3.0.0",
     "ejs": "^3.0.1",
