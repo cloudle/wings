@@ -1,10 +1,12 @@
 import React from 'react';
 import { render, Box, Text, Color, } from 'ink';
+import Spinner from 'ink-spinner';
 
 import Provider from './components/provider';
 import Mark from './components/mark';
 import { connect, } from './utils';
 import { appStore, } from './store';
+import { useStdout, } from './hooks';
 import * as appActions from './store/appAction';
 
 type Props = {
@@ -12,17 +14,19 @@ type Props = {
 }
 
 const App = (props: Props) => {
-	const { counter, } = props;
+	const { counter, } = props,
+		stdout = useStdout();
 
-	return <Box width="100%">
-		<Box flexGrow={1}>
+	return <Box flexDirection="column">
+		<Box>
 			<Mark/>
+			<Spinner type="dots"/>
 			<Color hex="#e26a72">
-				counter: {counter}
+				{' '}counter: {counter}
 			</Color>
 		</Box>
 		<Box>
-			<Text>Hell</Text>
+			<Color hex="#61AEEF">ef</Color>
 		</Box>
 	</Box>;
 };
@@ -39,12 +43,14 @@ const AppContainer = (props) => {
 	</Provider>;
 };
 
-let lastUnmount;
+let app;
 
 export function update() {
-	if (lastUnmount) lastUnmount();
-	const { unmount } = render(<AppContainer/>);
-	lastUnmount = unmount;
+	if (app) {
+		app.rerender();
+	} else {
+		app = render(<AppContainer/>, process.stdout);
+	}
 }
 
 export function increase() {
