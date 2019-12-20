@@ -1,13 +1,30 @@
 import React from 'react';
-import { render, Box, Color, } from 'ink';
+import { render, Box, Text, Color, } from 'ink';
 
 import Provider from './components/provider';
+import Mark from './components/mark';
 import { connect, } from './utils';
 import { appStore, } from './store';
 import * as appActions from './store/appAction';
 
-const App = (props) => {
-	return <Color>something to render {props.counter}!!</Color>;
+type Props = {
+	counter?: Number,
+}
+
+const App = (props: Props) => {
+	const { counter, } = props;
+
+	return <Box width="100%">
+		<Box flexGrow={1}>
+			<Mark/>
+			<Color hex="#e26a72">
+				counter: {counter}
+			</Color>
+		</Box>
+		<Box>
+			<Text>Hell</Text>
+		</Box>
+	</Box>;
 };
 
 const ConnectedApp = connect(({ app, }) => {
@@ -19,7 +36,7 @@ const ConnectedApp = connect(({ app, }) => {
 const AppContainer = (props) => {
 	return <Provider store={appStore}>
 		<ConnectedApp/>
-	</Provider>
+	</Provider>;
 };
 
 let lastUnmount;
