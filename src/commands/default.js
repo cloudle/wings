@@ -1,6 +1,6 @@
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
-import { createDevServer } from '../utils/server';
+import { createServer } from '../utils/server';
 
 export default {
 	command: '$0',
@@ -37,11 +37,11 @@ export default {
 			.group(Object.keys(upOptions), '[up] Options:');
 	},
 	handler: () => {
-		const globalModules = extractGlobalModules(),
-			{ wingsConfig, webpack, } = globalModules,
-			{ webpackConfigs, devConfigs, host: getHost, port: getPort } = wingsConfig,
-			host = getHost(),
-			port = getPort();
+		const globalModules = extractGlobalModules();
+		const { wingsConfig, webpack, } = globalModules;
+		const { webpackConfigs, devConfigs, host: getHost, port: getPort } = wingsConfig;
+		const host = getHost();
+		const port = getPort();
 
 		webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 		devConfigs.unshift(defaultDevConfigMiddleware);
@@ -70,10 +70,10 @@ export default {
 			}
 		}
 
-		const compiler = webpack(webpackConfig),
-			developmentServer = createDevServer(globalModules, compiler, devConfig);
+		const compiler = webpack(webpackConfig);
+		const server = createServer(globalModules, compiler, devConfig);
 
-		developmentServer.listen(port, host, (error) => {
+		server.listen(port, host, (error) => {
 			if (error) {
 				console.log(error);
 			} else {
