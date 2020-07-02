@@ -1,6 +1,6 @@
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
-import { createServer } from '../utils/server';
+import { createDevServer, createNodeServer, } from '../utils/server';
 
 export default {
 	command: '$0',
@@ -36,12 +36,15 @@ export default {
 		return yargs.options(upOptions)
 			.group(Object.keys(upOptions), '[up] Options:');
 	},
-	handler: () => {
+	handler: async (args) => {
 		const globalModules = extractGlobalModules();
-		const { wingsConfig, webpack, } = globalModules;
-		const { webpackConfigs, devConfigs, host: getHost, port: getPort } = wingsConfig;
-		const host = getHost();
-		const port = getPort();
+		const { wingsConfig, wingsHelper, webpack, } = globalModules;
+		const { requireModule, } = wingsHelper;
+		const { webpackConfigs, devConfigs, } = wingsConfig;
+		const host = wingsConfig.host(args.host);
+		const port = wingsConfig.port(args.port);
+		const ssrPort = wingsConfig.ssrPort(args['ssr-port']);
+		const nodeEntry = requireModule('index.node.js');
 
 		webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 		devConfigs.unshift(defaultDevConfigMiddleware);
@@ -71,14 +74,26 @@ export default {
 		}
 
 		const compiler = webpack(webpackConfig);
-		const server = createServer(globalModules, compiler, devConfig);
+		const devServer = await createDevServer(globalModules, compiler, devConfig);
 
-		server.listen(port, host, (error) => {
+		devServer.listen(port, host, (error) => {
 			if (error) {
 				console.log(error);
 			} else {
 				console.log('Server ready!', host, port);
 			}
 		});
+
+		if (nodeEntry) {
+			const nodeServer = await createNodeServer(nodeEntry, globalModules, compiler, devConfig);
+
+			nodeServer.listen(ssrPort, host, (error) => {
+				if (error) {
+					console.log(error);
+				} else {
+					console.log('Node server ready!', host, ssrPort);
+				}
+			});
+		}
 	},
 };

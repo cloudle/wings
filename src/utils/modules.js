@@ -37,14 +37,16 @@ export const extractGlobalModules = () => {
 const defaultWingsConfig = {
 	isProduction: (env) => env === 'production',
 	env: () => process.env.ENV || 'development',
-	host: () => process.env.HOST || 'localhost',
-	port: () => process.env.PORT || 3000,
+	host: cli => process.env.HOST || cli || 'localhost',
+	port: cli => process.env.PORT || cli || 3000,
+	ssrPort: cli => process.env.SSR_PORT || cli || 3005,
 	optimizeMode: () => !!process.env.OPTIMIZE,
 	buildId: uuid,
 	output: resolve(process.cwd()),
 	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
 	publicPath: '/',
+	staticPath: (env) => 'wings',
 	webpackConfigs: [],
 	devConfigs: [],
 	hotOptions: { /* <- detailed config: https://github.com/webpack-contrib/webpack-hot-middleware */

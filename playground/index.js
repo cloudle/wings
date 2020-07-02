@@ -1,1 +1,3 @@
-console.log('hey!');
+import { pi, } from './util';
+
+console.log('hey!', pi);
