@@ -13,5 +13,13 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-flow": "^7.10.4",
     "@babel/preset-react": "^7.10.4"
+  },
+  "dependencies": {
+    "@hot-loader/react-dom": "^16.13.0",
+    "react-dom": "^16.13.1",
+    "react-hot-loader": "^4.12.21",
+    "react-native": "^0.62.2",
+    "react-native-web": "^0.13.1",
+    "react-universal-ui": "^1.0.55"
   }
 }

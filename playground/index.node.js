@@ -11,8 +11,10 @@ export const configureRouter = (server, express) => {
 
 	const router = Router();
 	router.use('/ap', (req, res) => {
-		res.json({ message: 'hello world!!', });
+		res.json({ message: 'hello world!', });
 	});
+
+	// router.use('*', ssrUtils.universalRender(AppRegistry, reactDom));
 
 	return router;
 };

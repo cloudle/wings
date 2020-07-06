@@ -1,3 +1,11 @@
-import { pi, } from './util';
+import { AppRegistry, } from 'react-native';
 
-console.log('hey!', pi);
+import App from './src';
+
+AppRegistry.registerComponent('app', () => App);
+AppRegistry.runApplication('app', {
+	initialProps: {},
+	rootTag: document.getElementById('root'),
+});
+
+if (module.hot) module.hot.accept();

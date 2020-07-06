@@ -1,6 +1,6 @@
 {
   "name": "wings-cli",
-  "version": "0.1.14",
+  "version": "0.1.15",
   "description": "CLI tool that accelerate Node/UI development",
   "keywords": [],
   "author": "Cloud Le",
@@ -20,6 +20,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "files": [
+    "templates",
     "dist",
     "index.js",
     "index.ejs"
