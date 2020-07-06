@@ -1,9 +1,9 @@
-console.log('this is Node!');
+console.log('this is Node!!');
 
-module.exports = {
-	configure: (server, express) => {
-		server.use('/api', (req, res) => {
-			res.json({ message: 'hello' });
-		});
-	},
+export const configure = async (server, express) => {
+	server.use('/api', (req, res) => {
+		res.json({ message: 'hello!' });
+	});
+
+	return server;
 };

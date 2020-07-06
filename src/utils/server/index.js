@@ -8,7 +8,6 @@ export async function createDevServer(globals, compiler, devOptions) {
 	const isProduction = wingsConfig.isProduction(env);
 	const staticPath = wingsConfig.staticPath(env);
 	const server = express();
-	const nodeEntry = requireModule('index.node.js');
 
 	if (!isProduction) {
 		server.use(devMiddleware(compiler, devOptions));
@@ -20,10 +19,6 @@ export async function createDevServer(globals, compiler, devOptions) {
 
 	server.set('view engine', 'ejs');
 	server.use(express.static(staticPath));
-
-	if (nodeEntry && nodeEntry.configure) {
-		nodeEntry.configure(server);
-	}
 
 	const listen = (port, host, callback) => {
 		server.listen(port, host, callback);

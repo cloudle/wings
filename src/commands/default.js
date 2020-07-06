@@ -1,3 +1,5 @@
+import { fork, } from 'child_process';
+import { resolve, } from 'path';
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
 import { createDevServer, createNodeServer, } from '../utils/server';
@@ -43,8 +45,7 @@ export default {
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
 		const port = wingsConfig.port(args.port);
-		const ssrPort = wingsConfig.ssrPort(args['ssr-port']);
-		const nodeEntry = requireModule('index.node.js');
+		const nodeEntry = resolve(process.cwd(), 'index.node.js');
 
 		webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 		devConfigs.unshift(defaultDevConfigMiddleware);
@@ -85,14 +86,12 @@ export default {
 		});
 
 		if (nodeEntry) {
-			const nodeServer = await createNodeServer(nodeEntry, globalModules, compiler, devConfig);
+			const serverPath = resolve(__dirname, '../utils/server/node.js');
+			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 
-			nodeServer.listen(ssrPort, host, (error) => {
-				if (error) {
-					console.log(error);
-				} else {
-					console.log('Node server ready!', host, ssrPort);
-				}
+			fork(babelNodePath, [serverPath], {
+				cwd: process.cwd(),
+				stdio: 'inherit',
 			});
 		}
 	},
