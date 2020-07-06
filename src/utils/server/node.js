@@ -21,11 +21,10 @@ const serverConfigure = nodeEntry.configureServer || defaultServerConfigure;
 moduleAlias.addAlias('react-native', 'react-native-web');
 
 if (!isProduction) { /* <- hot reload server-side code on development mode */
-	const watcher = chokidar.watch([
-		path.resolve(process.cwd(), './src'),
-		path.resolve(process.cwd(), './index.js'),
-		path.resolve(process.cwd(), './index.node.js'),
-	], { ignoreInitial: true });
+	const watcher = chokidar.watch(path.resolve(process.cwd(), './'), {
+		ignoreInitial: true,
+		ignored: ['**/node_modules/**/*', '**/.git/**/*', '**/.idea/**/*'],
+	});
 
 	watcher.on('all', (event, filename) => {
 		console.log(chalk.magenta('hot code reload'), chalk.green(filename), 'updated.');

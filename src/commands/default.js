@@ -2,7 +2,7 @@ import { fork, } from 'child_process';
 import { resolve, } from 'path';
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
-import { createDevServer, createNodeServer, } from '../utils/server';
+import { createDevServer, } from '../utils/server/dev';
 
 export default {
 	command: '$0',
@@ -41,7 +41,6 @@ export default {
 	handler: async (args) => {
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, } = globalModules;
-		const { requireModule, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
 		const port = wingsConfig.port(args.port);
