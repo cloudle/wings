@@ -21,7 +21,7 @@ const serverConfigure = nodeEntry && nodeEntry.configureServer || defaultServerC
 moduleAlias.addAlias('react-native', 'react-native-web');
 
 if (!isProduction) { /* <- hot reload server-side code on development mode */
-	const watcher = chokidar.watch(path.resolve(process.cwd(), './'), {
+	const watcher = chokidar.watch(process.cwd(), {
 		ignoreInitial: true,
 		ignored: ['**/node_modules/**/*', '**/.git/**/*', '**/.idea/**/*'],
 	});

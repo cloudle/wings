@@ -41,10 +41,11 @@ export default {
 	handler: async (args) => {
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, } = globalModules;
+		const { moduleExist, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
 		const port = wingsConfig.port(args.port);
-		const nodeEntry = resolve(process.cwd(), 'index.node.js');
+		const nodeEntryExist = moduleExist('index.node.js', true);
 
 		webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 		devConfigs.unshift(defaultDevConfigMiddleware);
@@ -84,7 +85,7 @@ export default {
 			}
 		});
 
-		if (nodeEntry) {
+		if (nodeEntryExist) {
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
 			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 
