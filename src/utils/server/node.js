@@ -16,7 +16,7 @@ const port = wingsConfig.ssrPort();
 const server = express();
 const nodeEntry = requireModule('index.node.js');
 const defaultServerConfigure = () => new Promise((resolve, reject) => resolve());
-const serverConfigure = nodeEntry.configureServer || defaultServerConfigure;
+const serverConfigure = nodeEntry && nodeEntry.configureServer || defaultServerConfigure;
 
 moduleAlias.addAlias('react-native', 'react-native-web');
 
@@ -35,12 +35,12 @@ if (!isProduction) { /* <- hot reload server-side code on development mode */
 server.set('view engine', 'ejs');
 server.use(express.static(staticPath));
 
-server.use((req, res, next) => {
-	require(path.resolve(process.cwd(), './index.node.js'))
-		.configureRouter(server, express)(req, res, next);
-});
+serverConfigure(server, express).then(() => {
+	server.use((req, res, next) => {
+		require(path.resolve(process.cwd(), './index.node.js'))
+			.configureRouter(server, express)(req, res, next);
+	});
 
-serverConfigure(server).then(() => {
 	server.listen(port, host, () => {
 		console.log('server is ready!');
 	});
