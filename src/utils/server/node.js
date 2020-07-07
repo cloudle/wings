@@ -13,8 +13,9 @@ const { requireModule, } = wingsHelper;
 const env = wingsConfig.env();
 const isProduction = wingsConfig.isProduction(env);
 const nodeEntry = requireModule('index.node.js');
+const configureServer = nodeEntry && nodeEntry.configureServer;
 
-if (!isProduction) { /* <- hot reload server-side code on development mode */
+if (!isProduction && configureServer) { /* <- hot reload server-side code on development mode */
 	const watcher = chokidar.watch(process.cwd(), {
 		ignoreInitial: true,
 		ignored: ['**/node_modules/**/*', '**/.git/**/*', '**/.idea/**/*'],
@@ -26,7 +27,7 @@ if (!isProduction) { /* <- hot reload server-side code on development mode */
 	});
 }
 
-if (nodeEntry && nodeEntry.configureServer) {
+if (configureServer) {
 	const staticPath = wingsConfig.staticPath(env);
 	const host = wingsConfig.host();
 	const port = wingsConfig.ssrPort();
@@ -35,7 +36,7 @@ if (nodeEntry && nodeEntry.configureServer) {
 	server.set('view engine', 'ejs');
 	server.use(express.static(staticPath));
 
-	nodeEntry.configureServer(server, globalModules).then(() => {
+	configureServer(server, globalModules).then(() => {
 		server.use((req, res, next) => {
 			const updatedEntry = require(path.resolve(process.cwd(), './index.node.js'));
 

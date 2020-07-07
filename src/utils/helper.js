@@ -36,7 +36,7 @@ export const requireModule = (directions, req = true) => {
 	}
 };
 
-const conventionalEntries = ['index.js', 'index.web.js', 'index.ios.js', 'index.android.js'];
+const conventionalEntries = ['index.web.js', 'index.js'];
 
 export const guessEntry = () => {
 	for (let i = 0; i < conventionalEntries.length; i += 1) {

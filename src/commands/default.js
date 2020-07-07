@@ -41,49 +41,56 @@ export default {
 	handler: async (args) => {
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, } = globalModules;
-		const { moduleExist, } = wingsHelper;
+		const { moduleExist, guessEntry, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
 		const port = wingsConfig.port(args.port);
+		const webEntryExist = guessEntry();
 		const nodeEntryExist = moduleExist('index.node.js', true);
 
-		webpackConfigs.unshift(defaultWebpackConfigMiddleware);
-		devConfigs.unshift(defaultDevConfigMiddleware);
-
-		let webpackConfig, devConfig;
-
-		for (let i = 0; i < webpackConfigs.length; i += 1) {
-			const currentMiddleware = webpackConfigs[i],
-				nextConfig = currentMiddleware(webpackConfig, globalModules);
-
-			if (nextConfig) {
-				webpackConfig = nextConfig;
-			} else {
-				break;
-			}
+		if (!webEntryExist && !nodeEntryExist) {
+			console.log('no entry found! you need at least one single entry e.g index.js, index.web.js, index.node.js');
 		}
 
-		for (let i = 0; i < devConfigs.length; i += 1) {
-			const currentMiddleware = devConfigs[i],
-				nextConfig = currentMiddleware(devConfig, globalModules);
+		if (webEntryExist) {
+			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
+			devConfigs.unshift(defaultDevConfigMiddleware);
 
-			if (nextConfig) {
-				devConfig = nextConfig;
-			} else {
-				break;
+			let webpackConfig, devConfig;
+
+			for (let i = 0; i < webpackConfigs.length; i += 1) {
+				const currentMiddleware = webpackConfigs[i],
+					nextConfig = currentMiddleware(webpackConfig, globalModules);
+
+				if (nextConfig) {
+					webpackConfig = nextConfig;
+				} else {
+					break;
+				}
 			}
+
+			for (let i = 0; i < devConfigs.length; i += 1) {
+				const currentMiddleware = devConfigs[i],
+					nextConfig = currentMiddleware(devConfig, globalModules);
+
+				if (nextConfig) {
+					devConfig = nextConfig;
+				} else {
+					break;
+				}
+			}
+
+			const compiler = webpack(webpackConfig);
+			const devServer = await createDevServer(globalModules, compiler, devConfig);
+
+			devServer.listen(port, host, (error) => {
+				if (error) {
+					console.log(error);
+				} else {
+					console.log('Server ready!', host, port);
+				}
+			});
 		}
-
-		const compiler = webpack(webpackConfig);
-		const devServer = await createDevServer(globalModules, compiler, devConfig);
-
-		devServer.listen(port, host, (error) => {
-			if (error) {
-				console.log(error);
-			} else {
-				console.log('Server ready!', host, port);
-			}
-		});
 
 		if (nodeEntryExist) {
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
