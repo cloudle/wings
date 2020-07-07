@@ -5,6 +5,8 @@ import moduleAlias from 'module-alias';
 import chalk from 'chalk';
 import { extractGlobalModules, } from '../modules';
 
+moduleAlias.addAlias('react-native', 'react-native-web');
+
 const globalModules = extractGlobalModules();
 const { wingsConfig, wingsHelper, webpack, express, } = globalModules;
 const { requireModule, } = wingsHelper;
@@ -17,8 +19,6 @@ const server = express();
 const nodeEntry = requireModule('index.node.js');
 const defaultServerConfigure = () => new Promise((resolve, reject) => resolve());
 const serverConfigure = nodeEntry && nodeEntry.configureServer || defaultServerConfigure;
-
-moduleAlias.addAlias('react-native', 'react-native-web');
 
 if (!isProduction) { /* <- hot reload server-side code on development mode */
 	const watcher = chokidar.watch(process.cwd(), {
