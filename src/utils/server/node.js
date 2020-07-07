@@ -12,13 +12,7 @@ const { wingsConfig, wingsHelper, webpack, express, } = globalModules;
 const { requireModule, } = wingsHelper;
 const env = wingsConfig.env();
 const isProduction = wingsConfig.isProduction(env);
-const staticPath = wingsConfig.staticPath(env);
-const host = wingsConfig.host();
-const port = wingsConfig.ssrPort();
-const server = express();
 const nodeEntry = requireModule('index.node.js');
-const defaultServerConfigure = () => new Promise((resolve, reject) => resolve());
-const serverConfigure = nodeEntry && nodeEntry.configureServer || defaultServerConfigure;
 
 if (!isProduction) { /* <- hot reload server-side code on development mode */
 	const watcher = chokidar.watch(process.cwd(), {
@@ -32,19 +26,26 @@ if (!isProduction) { /* <- hot reload server-side code on development mode */
 	});
 }
 
-server.set('view engine', 'ejs');
-server.use(express.static(staticPath));
+if (nodeEntry && nodeEntry.configureServer) {
+	const staticPath = wingsConfig.staticPath(env);
+	const host = wingsConfig.host();
+	const port = wingsConfig.ssrPort();
+	const server = express();
 
-serverConfigure(server, globalModules).then(() => {
-	server.use((req, res, next) => {
-		const updatedEntry = require(path.resolve(process.cwd(), './index.node.js'));
+	server.set('view engine', 'ejs');
+	server.use(express.static(staticPath));
 
-		if (updatedEntry.configureRouter) {
-			updatedEntry.configureRouter(server, globalModules)(req, res, next);
-		} else next();
+	nodeEntry.configureServer(server, globalModules).then(() => {
+		server.use((req, res, next) => {
+			const updatedEntry = require(path.resolve(process.cwd(), './index.node.js'));
+
+			if (updatedEntry.configureRouter) {
+				updatedEntry.configureRouter(server, globalModules)(req, res, next);
+			} else next();
+		});
+
+		server.listen(port, host, () => {
+			console.log('server is ready!');
+		});
 	});
-
-	server.listen(port, host, () => {
-		console.log('server is ready!');
-	});
-});
+}
