@@ -19,13 +19,11 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 	const conditionalPlugins = isProduction ? [] : [new webpack.HotModuleReplacementPlugin()];
 	const reactHotReloadAvailable = moduleExist('react-hot-loader');
 	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
-	const hot = [];
+	const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);
+	const hot = [hotMiddlewareClientSrc];
 	const babelPlugins = [];
 
 	if (!isProduction && reactHotReloadAvailable) {
-		const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);
-
-		hot.unshift(hotMiddlewareClientSrc);
 		hot.unshift('react-hot-loader/patch');
 		babelPlugins.unshift('react-hot-loader/babel');
 	}
