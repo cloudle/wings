@@ -30,10 +30,12 @@ function reporter(middlewareOptions, options) {
 }
 
 export const defaultDevConfigMiddleware = (config, globals) => {
-	const { wingsConfig, } = globals,
-		{ publicPath, port: getPort, optimizeMode: getOptimizeMode, } = wingsConfig,
-		port = getPort(),
-		optimizeMode = getOptimizeMode();
+	const { wingsConfig, } = globals;
+	const env = wingsConfig.env();
+	const isProduction = wingsConfig.isProduction(env);
+	const publicPath = wingsConfig.publicPath(isProduction, env);
+	const port = wingsConfig.port();
+	const optimizeMode = wingsConfig.optimizeMode();
 
 	return {
 		publicPath,

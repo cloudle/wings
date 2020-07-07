@@ -45,7 +45,7 @@ const defaultWingsConfig = {
 	output: resolve(process.cwd()),
 	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
-	publicPath: '/',
+	publicPath: (isProduction, env) => '/',
 	staticPath: (env) => 'wings',
 	webpackConfigs: [],
 	devConfigs: [],

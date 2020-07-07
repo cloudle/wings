@@ -35,10 +35,10 @@ if (!isProduction) { /* <- hot reload server-side code on development mode */
 server.set('view engine', 'ejs');
 server.use(express.static(staticPath));
 
-serverConfigure(server, express).then(() => {
+serverConfigure(server, globalModules).then(() => {
 	server.use((req, res, next) => {
 		require(path.resolve(process.cwd(), './index.node.js'))
-			.configureRouter(server, express)(req, res, next);
+			.configureRouter(server, globalModules)(req, res, next);
 	});
 
 	server.listen(port, host, () => {

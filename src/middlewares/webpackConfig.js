@@ -11,17 +11,17 @@ function getEntries(configuredEntry) {
 }
 
 export const defaultWebpackConfigMiddleware = (config, globals) => {
-	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, } = globals,
-		{ entries, output, publicPath, ejsTemplate, htmlOptions, hotOptions, isProduction: checkProduction, env: getEnv, } = wingsConfig,
-		appEntries = getEntries(entries),
-		env = getEnv(),
-		isProduction = checkProduction(env),
-		conditionalPlugins = isProduction ? [] : [new webpack.HotModuleReplacementPlugin()],
-		reactHotReloadAvailable = moduleExist('react-hot-loader'),
-		hotQueryString = optionsToQueryString(hotOptions),
-		hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`),
-		hot = [hotMiddlewareClientSrc],
-		babelPlugins = [];
+	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, } = globals;
+	const appEntries = getEntries(wingsConfig.entries);
+	const env = wingsConfig.env();
+	const isProduction = wingsConfig.isProduction(env);
+	const publicPath = wingsConfig.publicPath(isProduction, env);
+	const conditionalPlugins = isProduction ? [] : [new webpack.HotModuleReplacementPlugin()];
+	const reactHotReloadAvailable = moduleExist('react-hot-loader');
+	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
+	const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);
+	const hot = [hotMiddlewareClientSrc];
+	const babelPlugins = [];
 
 	if (!isProduction && reactHotReloadAvailable) {
 		hot.unshift('react-hot-loader/patch');
@@ -40,7 +40,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		},
 		output: {
 			publicPath,
-			path: output,
+			path: wingsConfig.output,
 			filename: isProduction ? '[name].min.js' : '[name].js',
 			chunkFilename: '[name].js',
 		},
@@ -84,9 +84,9 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				isProduction,
 				publicPath,
 				appName: appJson.displayName || appJson.name || 'Wings',
-				template: ejsTemplate,
+				template: wingsConfig.ejsTemplate,
 				filename: 'index.html',
-				...htmlOptions,
+				...wingsConfig.htmlOptions,
 			}),
 			...conditionalPlugins,
 		],
