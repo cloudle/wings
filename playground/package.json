@@ -10,12 +10,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "metro-react-native-babel-preset": "^0.60.0"
+    "metro-react-native-babel-preset": "^0.60.0",
+    "@hot-loader/react-dom": "^16.13.0",
+    "react-hot-loader": "^4.12.21"
   },
   "dependencies": {
-    "@hot-loader/react-dom": "^16.13.0",
     "react-dom": "^16.13.1",
-    "react-hot-loader": "^4.12.21",
     "react-native": "^0.62.2",
     "react-native-web": "^0.13.1",
     "react-universal-ui": "^1.0.55"

@@ -37,8 +37,11 @@ server.use(express.static(staticPath));
 
 serverConfigure(server, globalModules).then(() => {
 	server.use((req, res, next) => {
-		require(path.resolve(process.cwd(), './index.node.js'))
-			.configureRouter(server, globalModules)(req, res, next);
+		const updatedEntry = require(path.resolve(process.cwd(), './index.node.js'));
+
+		if (updatedEntry.configureRouter) {
+			updatedEntry.configureRouter(server, globalModules)(req, res, next);
+		} else next();
 	});
 
 	server.listen(port, host, () => {
