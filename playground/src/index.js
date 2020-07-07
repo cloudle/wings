@@ -21,7 +21,7 @@ class App extends Component {
 			<Text
 				style={styles.counterText}
 				onPress={() => this.setState({ counter: this.state.counter + 1 })}>
-				App {this.state.counter} !!
+				App {this.state.counter}
 			</Text>
 		</View>;
 	}

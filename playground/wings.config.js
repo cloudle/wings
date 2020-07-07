@@ -4,4 +4,5 @@ const emptyWebpackMiddleware = (webpackConfig, globalModules) => {
 
 module.exports = {
 	webpackConfigs: [emptyWebpackMiddleware],
+	publicPath: (isProduction) => isProduction ? '/' : 'http://localhost:3000/',
 };
