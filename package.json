@@ -36,6 +36,7 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.0",
     "prop-types": "^15.7.2",
+    "tinycolor2": "^1.4.1",
     "yargs": "^15.0.2"
   },
   "dependencies": {
@@ -55,9 +56,9 @@
     "ink-gradient": "^1.0.0",
     "ink-multi-select": "^1.1.0",
     "ink-spinner": "^3.0.1",
+    "invalidate-module": "^1.0.0",
     "lodash": "^4.17.15",
     "module-alias": "^2.2.2",
-    "invalidate-module": "^1.0.0",
     "progress-bar-webpack-plugin": "^1.12.1",
     "react": "^16.12.0",
     "uuid": "^3.3.3",
