@@ -1,6 +1,6 @@
 {
   "name": "wings-cli",
-  "version": "0.1.19",
+  "version": "0.1.22",
   "description": "CLI tool that accelerate Node/UI development",
   "keywords": [],
   "author": "Cloud Le",
@@ -36,7 +36,6 @@
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.11.0",
     "prop-types": "^15.7.2",
-    "tinycolor2": "^1.4.1",
     "yargs": "^15.0.2"
   },
   "dependencies": {

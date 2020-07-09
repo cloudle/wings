@@ -1,5 +1,5 @@
 import { extractGlobalModules, } from '../utils';
-import { getTemplateGroups, getTemplatePath, suggestTemplates, installDependencies, } from '../utils/template';
+import { getTemplateGroups, getTemplatePath, suggestTemplates, installDependencies, copyBoilerplateFiles, } from '../utils/template';
 
 export default {
 	command: 'extends <group> [feature]',
@@ -19,6 +19,7 @@ export default {
 
 		if (templatePath) {
 			installDependencies(templatePath);
+			copyBoilerplateFiles(templatePath);
 		} else {
 			suggestTemplates(group, feature, globalModules);
 		}
