@@ -1,0 +1,12 @@
+{
+	"dependencies": {
+		"react": "^16.13.1",
+		"react-native": "^0.63.0",
+		"react-native-web": "^0.13.3"
+	},
+	"devDependencies": {
+		"@hot-loader/react-dom": "^16.13.0",
+		"metro-react-native-babel-preset": "^0.60.0",
+		"react-hot-loader": "^4.12.21"
+	}
+}

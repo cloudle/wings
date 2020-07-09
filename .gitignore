@@ -5,3 +5,5 @@ node_modules
 
 # Project exclude paths
 /dist/
+
+/templates/**/yarn.lock
