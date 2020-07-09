@@ -1,4 +1,5 @@
-import { getTemplatePath, suggestTemplates, installDependencies, } from '../utils/template';
+import { extractGlobalModules, } from '../utils';
+import { getTemplateGroups, getTemplatePath, suggestTemplates, installDependencies, } from '../utils/template';
 
 export default {
 	command: 'extends <group> [feature]',
@@ -6,19 +7,20 @@ export default {
 	choices: ['react', 'lambda'],
 	builder: (yargs) => {
 		yargs.positional('group', {
-			choices: ['react', 'node', 'lambda', 'electron'],
+			choices: getTemplateGroups(),
 		}).positional('feature', {
 			describe: 'Name of the feature to extends',
 			type: 'string',
 		});
 	},
 	handler: async ({ group, feature }) => {
+		const globalModules = extractGlobalModules();
 		const templatePath = getTemplatePath(group, feature);
 
 		if (templatePath) {
 			installDependencies(templatePath);
 		} else {
-			suggestTemplates(group, feature);
+			suggestTemplates(group, feature, globalModules);
 		}
 	},
 };
