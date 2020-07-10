@@ -40,7 +40,7 @@ export default {
 	},
 	handler: async (args) => {
 		const globalModules = extractGlobalModules();
-		const { wingsConfig, wingsHelper, webpack, } = globalModules;
+		const { wingsConfig, wingsHelper, webpack, chalk, } = globalModules;
 		const { moduleExist, guessEntry, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
@@ -49,7 +49,10 @@ export default {
 		const nodeEntryExist = moduleExist('index.node.js', true);
 
 		if (!webEntryExist && !nodeEntryExist) {
-			console.log('no entry found! you need at least one single entry e.g index.js, index.web.js, index.node.js');
+			console.log(chalk.red('No entry found! ')
+				+ 'you need at least one entry '
+				+ chalk.gray('e.g: ')
+				+ chalk.green('index.web.js, index.js, index.node.js'));
 		}
 
 		if (webEntryExist) {
