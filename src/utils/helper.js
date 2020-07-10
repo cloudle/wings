@@ -38,12 +38,12 @@ export const requireModule = (directions, req = true) => {
 
 const conventionalEntries = ['index.web.js', 'index.js'];
 
-export const guessEntry = () => {
-	for (let i = 0; i < conventionalEntries.length; i += 1) {
-		const searchPath = resolve(process.cwd(), conventionalEntries[i]);
+export const guessEntry = (searchList = conventionalEntries) => {
+	for (let i = 0; i < searchList.length; i += 1) {
+		const searchPath = resolve(process.cwd(), searchList[i]);
 
 		if (existsSync(searchPath)) {
-			return conventionalEntries[i];
+			return searchList[i];
 		}
 	}
 

@@ -27,6 +27,10 @@ if (!isProduction && configureServer) { /* <- hot reload server-side code on dev
 	});
 }
 
+const asyncWrap = result => (result && result.then
+	? result
+	: new Promise(resolve => resolve(result)));
+
 if (configureServer) {
 	const staticPath = wingsConfig.staticPath(env);
 	const host = wingsConfig.host();
@@ -36,7 +40,7 @@ if (configureServer) {
 	server.set('view engine', 'ejs');
 	server.use(express.static(staticPath));
 
-	configureServer(server, globalModules).then(() => {
+	asyncWrap(configureServer(server, globalModules)).then(() => {
 		server.use((req, res, next) => {
 			const updatedEntry = require(path.resolve(process.cwd(), './index.node.js'));
 
