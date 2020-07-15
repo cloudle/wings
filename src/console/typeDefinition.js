@@ -38,3 +38,9 @@ export type Dimensions = {
 	window?: Dimension,
 	screen?: Dimension,
 };
+
+export type ConsoleMessage = {
+	text?: String,
+	color?: String,
+	loading?: Boolean,
+};

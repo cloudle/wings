@@ -50,7 +50,7 @@ if (configureServer) {
 		});
 
 		server.listen(port, host, () => {
-			console.log('server is ready!');
+			// console.log('server is ready!');
 		});
 	});
 }

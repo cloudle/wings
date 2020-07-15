@@ -3,6 +3,9 @@ import { resolve, } from 'path';
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
 import { createDevServer, } from '../utils/server/dev';
+import { renderConsole, } from '../console';
+import { consoleStore, } from '../console/store';
+import * as consoleActions from '../console/store/appAction';
 
 export default {
 	command: '$0',
@@ -39,6 +42,8 @@ export default {
 			.group(Object.keys(upOptions), '[up] Options:');
 	},
 	handler: async (args) => {
+		renderConsole();
+
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, chalk, } = globalModules;
 		const { moduleExist, guessEntry, } = wingsHelper;
@@ -56,6 +61,8 @@ export default {
 		}
 
 		if (webEntryExist) {
+			consoleStore.dispatch(consoleActions.toggleDevStatus(true));
+
 			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 			devConfigs.unshift(defaultDevConfigMiddleware);
 
@@ -90,7 +97,11 @@ export default {
 				if (error) {
 					console.log(error);
 				} else {
-					console.log('Server ready!', host, port);
+					consoleStore.dispatch(consoleActions.setDevMessage({
+						text: 'Welcome!',
+						loading: false,
+					}));
+					// console.log('Server ready!', host, port);
 				}
 			});
 		}
@@ -98,6 +109,8 @@ export default {
 		if (nodeEntryExist) {
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
 			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
+
+			consoleStore.dispatch(consoleActions.toggleDevStatus(true));
 
 			fork(babelNodePath, [serverPath], {
 				cwd: process.cwd(),
