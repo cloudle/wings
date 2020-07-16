@@ -31,6 +31,8 @@ const appReducer = (state = initialState, action) => {
 		return { ...state, devMessage: { ...state.devMessage, ...action.payload, } };
 	case Actions.SetNodeMessage:
 		return { ...state, nodeMessage: { ...state.nodeMessage, ...action.payload, } };
+	case Actions.SetNodeAddress:
+		return { ...state, nodeAddress: action.payload, };
 	case Actions.SetDevStats:
 		return { ...state, devStats: action.payload, };
 	case Actions.SetDevAddress:
