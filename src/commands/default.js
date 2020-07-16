@@ -97,11 +97,7 @@ export default {
 				if (error) {
 					console.log(error);
 				} else {
-					consoleStore.dispatch(consoleActions.setDevMessage({
-						text: 'Welcome!',
-						loading: false,
-					}));
-					// console.log('Server ready!', host, port);
+					consoleStore.dispatch(consoleActions.setDevAddress({ host, port }));
 				}
 			});
 		}

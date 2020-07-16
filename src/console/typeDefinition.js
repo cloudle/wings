@@ -44,3 +44,14 @@ export type ConsoleMessage = {
 	color?: String,
 	loading?: Boolean,
 };
+
+export type ServerAddress = {
+	host?: String,
+	port?: String,
+};
+
+export type DevProgress = {
+	percentage?: Number,
+	message?: String,
+	args?: Array<String>,
+};

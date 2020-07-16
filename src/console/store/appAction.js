@@ -23,3 +23,11 @@ export function setNodeMessage(payload) {
 export function setDevStats(payload) {
 	return { type: Actions.SetDevStats, payload, };
 }
+
+export function setDevAddress(payload) {
+	return { type: Actions.SetDevAddress, payload, };
+}
+
+export function setDevProgress(payload) {
+	return { type: Actions.SetDevProgress, payload, };
+}

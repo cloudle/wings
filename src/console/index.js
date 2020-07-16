@@ -9,41 +9,56 @@ import { connect, colors, } from './utils';
 import { consoleStore, } from './store';
 import { useStdout, } from './hooks';
 import * as appActions from './store/appAction';
+import type { ServerAddress, DevProgress, } from './typeDefinition';
 
 type Props = {
 	counter?: Number,
-	devAvailable?: Boolean,
-	devMessage?: String,
-	nodeAvailable?: Boolean,
-	nodeMessage?: String,
-	devStats?: Object,
+	dev?: {
+		available?: Boolean,
+		message?: Object,
+		stats?: Object,
+		address?: ServerAddress,
+		progress?: DevProgress,
+	},
+	node?: {
+		available?: Boolean,
+		message?: Object,
+	},
 }
 
 const App = (props: Props) => {
-	const { counter, devAvailable, devMessage, devStats, nodeAvailable, nodeMessage, } = props;
+	const { counter, dev, node, } = props;
 	const stdout = useStdout();
 
 	return <Box flexDirection="column">
 		<WingsInfo/>
-		{nodeAvailable && <NodeServer
-			message={nodeMessage}/>}
-		{devAvailable && <DevelopmentServer
-			message={devMessage}
-			stats={devStats}/>}
-		<Color hex="#e26a72">
-			{counter}
-		</Color>
+		{node.available && <NodeServer
+			message={node.message}/>}
+		{dev.available && <DevelopmentServer
+			message={dev.message}
+			stats={dev.stats}
+			address={dev.address}
+			progress={dev.progress}/>}
+		{/*<Color hex="#e26a72">*/}
+		{/*	{counter}*/}
+		{/*</Color>*/}
 	</Box>;
 };
 
 const ConnectedApp = connect(({ app, }) => {
 	return {
 		counter: app.counter,
-		devAvailable: app.devAvailable,
-		devMessage: app.devMessage,
-		devStats: app.devStats,
-		nodeAvailable: app.nodeAvailable,
-		nodeMessage: app.nodeMessage,
+		dev: {
+			available: app.devAvailable,
+			message: app.devMessage,
+			stats: app.devStats,
+			address: app.devAddress,
+			progress: app.devProgress,
+		},
+		node: {
+			available: app.nodeAvailable,
+			message: app.nodeMessage,
+		},
 	};
 })(App);
 

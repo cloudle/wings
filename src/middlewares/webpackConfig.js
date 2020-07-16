@@ -1,6 +1,8 @@
 import { resolve, } from 'path';
 import { isArray, } from 'lodash';
 import { guessEntry, moduleExist, optionsToQueryString, } from '../utils/helper';
+import { consoleStore, } from '../console/store';
+import * as consoleActions from '../console/store/appAction';
 
 function getEntries(configuredEntry) {
 	if (configuredEntry) {
@@ -10,13 +12,24 @@ function getEntries(configuredEntry) {
 	return [guessEntry()];
 }
 
+function progressHandler(percentage, message, ...args) {
+	consoleStore.dispatch(consoleActions.setDevProgress({
+		percentage,
+		message,
+		args,
+	}));
+}
+
 export const defaultWebpackConfigMiddleware = (config, globals) => {
 	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, } = globals;
 	const appEntries = getEntries(wingsConfig.entries);
 	const env = wingsConfig.env();
 	const isProduction = wingsConfig.isProduction(env);
 	const publicPath = wingsConfig.publicPath(isProduction, env);
-	const conditionalPlugins = isProduction ? [] : [new webpack.HotModuleReplacementPlugin()];
+	const conditionalPlugins = isProduction ? [] : [
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.ProgressPlugin(progressHandler),
+	];
 	const reactHotReloadAvailable = moduleExist('react-hot-loader');
 	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
 	const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);

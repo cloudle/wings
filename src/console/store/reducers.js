@@ -15,6 +15,8 @@ const initialState = {
 	devStats: {
 
 	},
+	devAddress: undefined,
+	devProgress: undefined,
 };
 
 const appReducer = (state = initialState, action) => {
@@ -31,6 +33,10 @@ const appReducer = (state = initialState, action) => {
 		return { ...state, nodeMessage: { ...state.nodeMessage, ...action.payload, } };
 	case Actions.SetDevStats:
 		return { ...state, devStats: action.payload, };
+	case Actions.SetDevAddress:
+		return { ...state, devAddress: action.payload, };
+	case Actions.SetDevProgress:
+		return { ...state, devProgress: action.payload, };
 	default:
 		return state;
 	}
