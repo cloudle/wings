@@ -20,19 +20,19 @@ function BuildProgress(props: Props) {
 	for (let i = 0; i < progressLength; i += 1) {
 		// const blockDisplay = i > actualLength ? terminals.remaining : terminals.complete;
 		const blockColor = i > actualLength ? colors.gray : progressColor;
-		progressBlocks.push(<Color key={i} hex={blockColor}>{terminals.complete}</Color>);
+		progressBlocks.push(<Text key={i} color={blockColor}>{terminals.complete}</Text>);
 	}
 
 	return <Box>
-		<Color hex={barColor}>
+		<Text color={barColor}>
 			<Text>{terminals.prefix}</Text>
-			<Color hex={colors.gray}>
+			<Text color={colors.gray}>
 				{progressBlocks}
-			</Color>
+			</Text>
 			<Text>{terminals.suffix}</Text>
 			<Text> </Text>
-		</Color>
-		{/*<Color hex={colors.gray}> {percentageDisplay}%</Color>*/}
+		</Text>
+		{/*<Color color={colors.gray}> {percentageDisplay}%</Color>*/}
 	</Box>;
 }
 

@@ -106,7 +106,7 @@ export default {
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
 			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 
-			consoleStore.dispatch(consoleActions.toggleDevStatus(true));
+			consoleStore.dispatch(consoleActions.toggleNodeStatus(true));
 
 			fork(babelNodePath, [serverPath], {
 				cwd: process.cwd(),

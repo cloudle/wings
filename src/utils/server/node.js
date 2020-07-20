@@ -1,9 +1,11 @@
+import fetch from 'node-fetch';
 import path from 'path';
 import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
 import moduleAlias from 'module-alias';
 import chalk from 'chalk';
 import { extractGlobalModules, } from '../modules';
+import * as consoleActions from '../../console/store/appAction';
 
 moduleAlias.addAlias('react-native', 'react-native-web');
 
@@ -12,6 +14,9 @@ const { wingsConfig, wingsHelper, webpack, express, } = globalModules;
 const { requireModule, } = wingsHelper;
 const env = wingsConfig.env();
 const isProduction = wingsConfig.isProduction(env);
+const host = wingsConfig.host();
+const port = wingsConfig.ssrPort();
+const devPort = wingsConfig.port();
 const nodeEntry = requireModule('index.node.js');
 const configureServer = nodeEntry && nodeEntry.configureServer;
 
@@ -22,9 +27,25 @@ if (!isProduction && configureServer) { /* <- hot reload server-side code on dev
 	});
 
 	watcher.on('all', (event, filename) => {
-		console.log(chalk.magenta('hot code reload'), chalk.green(filename), 'updated.');
+		const relativeFilename = path.relative(process.cwd(), filename);
+		dispatch(consoleActions.setNodeHotUpdate({ event, filename: relativeFilename, }));
 		invalidate(path.resolve(filename));
 	});
+
+	const dispatch = (action) => {
+		fetch(`http://${host}:${devPort}/consoleDispatcher`, {
+			method: 'POST',
+			body: JSON.stringify(action),
+			headers: { 'Content-Type': 'application/json', },
+		});
+	};
+
+	const remoteLog = (...args) => dispatch(consoleActions.insertNodeConsole(args));
+
+	global.console.log = remoteLog;
+	global.console.warn = remoteLog;
+	global.console.error = remoteLog;
+	dispatch(consoleActions.setNodeAddress({ host, port, }));
 }
 
 const asyncWrap = result => (result && result.then
@@ -33,8 +54,6 @@ const asyncWrap = result => (result && result.then
 
 if (configureServer) {
 	const staticPath = wingsConfig.staticPath(env);
-	const host = wingsConfig.host();
-	const port = wingsConfig.ssrPort();
 	const server = express();
 
 	server.set('view engine', 'ejs');

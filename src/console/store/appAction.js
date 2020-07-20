@@ -20,8 +20,20 @@ export function setNodeMessage(payload) {
 	return { type: Actions.SetNodeMessage, payload, };
 }
 
+export function setNodeHotUpdate(payload) {
+	return { type: Actions.SetNodeHotUpdate, payload, };
+}
+
 export function setNodeAddress(payload) {
 	return { type: Actions.SetNodeAddress, payload, };
+}
+
+export function insertNodeConsole(payload) {
+	return { type: Actions.InsertNodeConsole, payload, };
+}
+
+export function clearNodeConsole() {
+	return { type: Actions.ClearNodeConsole, };
 }
 
 export function setDevStats(payload) {
@@ -34,4 +46,12 @@ export function setDevAddress(payload) {
 
 export function setDevProgress(payload) {
 	return { type: Actions.SetDevProgress, payload, };
+}
+
+export function insertDevConsole(payload) {
+	return { type: Actions.InsertDevConsole, payload, };
+}
+
+export function clearDevConsole() {
+	return { type: Actions.ClearDevConsole, };
 }

@@ -1,5 +1,5 @@
 import React, { Fragment, } from 'react';
-import { Box, Color, Text, } from 'ink';
+import { Box, Text, } from 'ink';
 import Spinner from 'ink-spinner';
 
 import BuildProgress from './buildProgress';
@@ -23,11 +23,11 @@ function DevelopmentServer(props: Props) {
 	return <Box flexDirection="column">
 		<Box>
 			<Box {...iStyles.titleContainer}>
-				<Color hex={colors.gray}>
-					Development Server:
-				</Color>
+				<Text color={colors.gray}>
+					Dev Server:
+				</Text>
 			</Box>
-			{address && <Color hex={colors.blue}>http://{address.host}:{address.port}</Color>}
+			{address && <Text color={colors.blue}>http://{address.host}:{address.port}</Text>}
 		</Box>
 		{<Box>
 			<Box {...iStyles.titleContainer}>
@@ -40,7 +40,7 @@ function DevelopmentServer(props: Props) {
 			<Text>{text}</Text>
 			{displayBuildTime && <Fragment>
 				<Text> after {buildTime}</Text>
-				<Color hex={colors.gray}>ms</Color>
+				<Text color={colors.gray}>ms</Text>
 			</Fragment>}
 		</Box>}
 	</Box>;

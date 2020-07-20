@@ -1,5 +1,6 @@
 import { combineReducers, } from '../utils';
 import * as Actions from './actions';
+import { InsertNodeConsole } from './actions';
 
 const initialState = {
 	counter: 0,
@@ -12,11 +13,12 @@ const initialState = {
 	nodeMessage: {
 		text: '',
 	},
-	devStats: {
-
-	},
+	nodeHotUpdate: undefined,
+	nodeConsole: [],
+	devStats: {},
 	devAddress: undefined,
 	devProgress: undefined,
+	devConsole: [],
 };
 
 const appReducer = (state = initialState, action) => {
@@ -33,12 +35,22 @@ const appReducer = (state = initialState, action) => {
 		return { ...state, nodeMessage: { ...state.nodeMessage, ...action.payload, } };
 	case Actions.SetNodeAddress:
 		return { ...state, nodeAddress: action.payload, };
+	case Actions.SetNodeHotUpdate:
+		return { ...state, nodeHotUpdate: action.payload, };
+	case Actions.InsertNodeConsole:
+		return { ...state, nodeConsole: [...state.nodeConsole, action.payload], };
+	case Actions.ClearNodeConsole:
+		return { ...state, nodeConsole: [], };
 	case Actions.SetDevStats:
 		return { ...state, devStats: action.payload, };
 	case Actions.SetDevAddress:
 		return { ...state, devAddress: action.payload, };
 	case Actions.SetDevProgress:
 		return { ...state, devProgress: action.payload, };
+	case Actions.InsertDevConsole:
+		return { ...state, devConsole: [...state.devConsole, action.payload], };
+	case Actions.ClearDevConsole:
+		return { ...state, devConsole: [], };
 	default:
 		return state;
 	}

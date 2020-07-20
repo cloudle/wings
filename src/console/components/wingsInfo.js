@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Color, Text, } from 'ink';
+import { Box, Text, } from 'ink';
 
 import { colors, sizes, iStyles, consoleStrings, } from '../utils';
 import packageInfo from '../../../package.json';
@@ -11,15 +11,15 @@ type Props = {
 function WingsInfo(props: Props) {
 	return <Box>
 		<Box {...iStyles.titleContainer}>
-			<Color hex={colors.gray}>
+			<Text color={colors.gray}>
 				{/*{consoleStrings.prefix}*/}
-				<Color hex={colors.purple}>wings cli</Color>
-				<Color hex={colors.gray}>:</Color>
+				<Text color={colors.purple}>wings cli</Text>
+				<Text color={colors.gray}>:</Text>
 				{/*{consoleStrings.suffix}*/}
-			</Color>
+			</Text>
 		</Box>
 		<Box>
-			<Color hex={colors.gray}>version@{packageInfo.version}</Color>
+			<Text color={colors.gray}>version@{packageInfo.version}</Text>
 		</Box>
 	</Box>;
 }

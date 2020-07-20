@@ -17,7 +17,7 @@ export const consoleStrings = {
 };
 
 export const sizes = {
-	groupTitle: 22,
+	groupTitle: 16,
 };
 
 export const iStyles = {
