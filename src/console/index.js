@@ -1,5 +1,5 @@
 import React, { useEffect, } from 'react';
-import { render, Box, Text, Color, useInput, } from 'ink';
+import { render, Box, useInput, useApp, } from 'ink';
 
 import Provider from './components/provider';
 import WingsInfo from './components/wingsInfo';
@@ -32,10 +32,16 @@ type Props = {
 const App = (props: Props) => {
 	const { counter, dev, node, } = props;
 	// const stdout = useStdout();
+	const { exit, } = useApp();
 	useInput((input, key) => {
-		if (['k'].indexOf(input) >= 0) {
+		const consoleDirty = dev.consoles.length > 0 || node.consoles.length > 0;
+
+		if (['k'].indexOf(input) >= 0 && consoleDirty) {
+			console.clear();
 			consoleStore.dispatch(consoleActions.clearDevConsole());
 			consoleStore.dispatch(consoleActions.clearNodeConsole());
+		} else if (input === 'q') {
+			exit();
 		}
 	});
 
@@ -45,7 +51,8 @@ const App = (props: Props) => {
 			message={dev.message}
 			stats={dev.stats}
 			address={dev.address}
-			progress={dev.progress}/>}
+			progress={dev.progress}
+			consoles={dev.consoles}/>}
 		{node.available && <NodeServer
 			message={node.message}
 			address={node.address}
@@ -87,7 +94,7 @@ export function renderConsole() {
 	if (app) {
 		app.rerender();
 	} else {
-		app = render(<AppContainer/>, process.stdout);
+		app = render(<AppContainer/>);
 	}
 }
 

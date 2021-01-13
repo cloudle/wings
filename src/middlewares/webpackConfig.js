@@ -1,6 +1,6 @@
 import { resolve, } from 'path';
 import { isArray, } from 'lodash';
-import { guessEntry, moduleExist, optionsToQueryString, } from '../utils/helper';
+import { guessEntry, moduleExist, optionsToQueryString, requireModule, resolveModule, } from '../utils/helper';
 import { consoleStore, } from '../console/store';
 import * as consoleActions from '../console/store/appAction';
 
@@ -30,15 +30,17 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.ProgressPlugin(progressHandler),
 	];
-	const reactHotReloadAvailable = moduleExist('react-hot-loader');
+	const reactRefreshAvailable = moduleExist('react-refresh');
+	const reactRefreshPluginAvailable = moduleExist('@pmmmwh/react-refresh-webpack-plugin');
 	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
 	const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);
 	const hot = [hotMiddlewareClientSrc];
 	const babelPlugins = [];
 
-	if (!isProduction && reactHotReloadAvailable) {
-		hot.unshift('react-hot-loader/patch');
-		babelPlugins.unshift('react-hot-loader/babel');
+	if (!isProduction && reactRefreshAvailable && reactRefreshPluginAvailable) {
+		const ReactRefreshWebpackPlugin = requireModule('node_modules/@pmmmwh/react-refresh-webpack-plugin');
+		conditionalPlugins.push(new ReactRefreshWebpackPlugin());
+		babelPlugins.push(resolveModule('node_modules/react-refresh/babel.js'));
 	}
 
 	return {
@@ -46,10 +48,14 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		mode: isProduction ? 'production' : 'development',
 		cache: true,
 		entry: {
-			app: isProduction ? appEntries : [...hot, ...appEntries],
+			app: {
+				import: isProduction ? appEntries : [...hot, ...appEntries],
+				filename: isProduction ? '[name].min.js' : '[name].js',
+			},
 		},
 		optimization: {
 			minimize: isProduction,
+			moduleIds: 'named',
 		},
 		output: {
 			publicPath,
@@ -66,7 +72,6 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 			mainFields: ['browser', 'main', 'module'],
 			alias: {
 				'react-native': 'react-native-web',
-				'react-dom': '@hot-loader/react-dom',
 			},
 			modules: [process.cwd(), 'node_modules'],
 			extensions: ['.web.js', '.js'],
@@ -82,10 +87,16 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				},
 			}, {
 				test: /\.css$/,
-				loader: 'style-loader!css-loader',
+				use: [
+					{ loader: 'style-loader' },
+					{ loader: 'css-loader' },
+				],
 			}, {
 				test: /\.(png|jpg|svg|ttf)$/,
-				loader: 'file-loader?name=[name].[ext]',
+				loader: 'file-loader',
+				options: {
+					name: '[hash].[ext]',
+				},
 			}, ],
 		},
 		plugins: [

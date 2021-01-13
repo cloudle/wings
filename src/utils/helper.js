@@ -18,7 +18,7 @@ export function optionsToQueryString(options) {
 	return Object.keys(options).reduce((acc, next) => `${acc}${next}=${options[next]}&`, '?').slice(0, -1);
 }
 
-export const requireModule = (directions, req = true) => {
+export const requireModule = (directions, req = require) => {
 	directions = ensureArray(directions);
 
 	for (let i = 0; i < directions.length; i += 1) {
@@ -30,11 +30,13 @@ export const requireModule = (directions, req = true) => {
 
 		for (let z = 0; z < searchPaths.length; z += 1) {
 			if (existsSync(searchPaths[z])) {
-				return req ? require(searchPaths[z]) : searchPaths[z];
+				return req(searchPaths[z]);
 			}
 		}
 	}
 };
+
+export const resolveModule = directions => requireModule(directions, require.resolve);
 
 const conventionalEntries = ['index.web.js', 'index.js'];
 

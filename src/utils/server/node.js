@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
 import path from 'path';
 import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
@@ -32,14 +32,8 @@ if (!isProduction && configureServer) { /* <- hot reload server-side code on dev
 		invalidate(path.resolve(filename));
 	});
 
-	const dispatch = (action) => {
-		fetch(`http://${host}:${devPort}/consoleDispatcher`, {
-			method: 'POST',
-			body: JSON.stringify(action),
-			headers: { 'Content-Type': 'application/json', },
-		});
-	};
-
+	const dispatch = action => axios.post(`http://${host}:${devPort}/consoleDispatcher`, action)
+		.catch(e => console.log(e));
 	const remoteLog = (...args) => dispatch(consoleActions.insertNodeConsole(args));
 
 	global.console.log = remoteLog;

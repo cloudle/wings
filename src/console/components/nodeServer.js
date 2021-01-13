@@ -40,7 +40,7 @@ function NodeServer(props: Props) {
 		</Box>}
 		{consoles.length > 0 && <Box>
 			<Box {...iStyles.titleContainer}/>
-			<Box flexDirection="column">
+			<Box flexDirection="column" flexGrow={1}>
 				{consoles.map((item, i) => <Text key={i}>{item.join(' ')}</Text>)}
 			</Box>
 		</Box>}

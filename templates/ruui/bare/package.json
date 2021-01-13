@@ -5,8 +5,8 @@
 		"react-native-web": "^0.13.3"
 	},
 	"devDependencies": {
-		"@hot-loader/react-dom": "^16.13.0",
 		"metro-react-native-babel-preset": "^0.60.0",
-		"react-hot-loader": "^4.12.21"
+		"@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+		"react-refresh": "^0.9.0"
 	}
 }

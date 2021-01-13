@@ -11,10 +11,11 @@ type Props = {
 	stats?: Object,
 	address?: ServerAddress,
 	progress?: DevProgress,
+	consoles?: Array<any>,
 }
 
 function DevelopmentServer(props: Props) {
-	const { message, stats, address = {}, progress, } = props;
+	const { message, stats, address = {}, progress, consoles, } = props;
 	const { text, color, loading, } = message;
 	const buildTime = extractBuildTime(stats);
 	const displayBuildTime = !loading && stats.startTime;
@@ -42,6 +43,12 @@ function DevelopmentServer(props: Props) {
 				<Text> after {buildTime}</Text>
 				<Text color={colors.gray}>ms</Text>
 			</Fragment>}
+		</Box>}
+		{consoles.length > 0 && <Box>
+			<Box {...iStyles.titleContainer}/>
+			<Box flexDirection="column" flexGrow={1}>
+				{consoles.map((item, i) => <Text key={i}>{item.join(' ')}</Text>)}
+			</Box>
 		</Box>}
 	</Box>;
 }

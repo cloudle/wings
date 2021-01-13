@@ -13,13 +13,13 @@ function WingsInfo(props: Props) {
 		<Box {...iStyles.titleContainer}>
 			<Text color={colors.gray}>
 				{/*{consoleStrings.prefix}*/}
-				<Text color={colors.purple}>wings cli</Text>
+				<Text color={colors.gray}>wings cli</Text>
 				<Text color={colors.gray}>:</Text>
 				{/*{consoleStrings.suffix}*/}
 			</Text>
 		</Box>
 		<Box>
-			<Text color={colors.gray}>version@{packageInfo.version}</Text>
+			<Text color={colors.purple}>version@{packageInfo.version}</Text>
 		</Box>
 	</Box>;
 }
