@@ -37,7 +37,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 	const babelPlugins = [];
 
 	if (!isProduction && reactRefreshAvailable) {
-		const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+		const ReactRefreshWebpackPlugin = requireModule('node_modules/@pmmmwh/react-refresh-webpack-plugin');
 		conditionalPlugins.push(new ReactRefreshWebpackPlugin());
 		babelPlugins.push(resolveModule('node_modules/react-refresh/babel.js'));
 	}
