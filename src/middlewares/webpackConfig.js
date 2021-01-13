@@ -30,14 +30,15 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.ProgressPlugin(progressHandler),
 	];
-	const reactRefreshAvailable = moduleExist('react-refresh');
+	const reactAvailable = moduleExist('react');
 	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
 	const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);
 	const hot = [hotMiddlewareClientSrc];
 	const babelPlugins = [];
 
-	if (!isProduction && reactRefreshAvailable) {
+	if (!isProduction && reactAvailable) {
 		const ReactRefreshWebpackPlugin = requireModule('node_modules/@pmmmwh/react-refresh-webpack-plugin');
+
 		conditionalPlugins.push(new ReactRefreshWebpackPlugin());
 		babelPlugins.push(resolveModule('node_modules/react-refresh/babel.js'));
 	}

@@ -10,7 +10,6 @@
 		"setimmediate": "^1.0.5"
 	},
 	"devDependencies": {
-		"metro-react-native-babel-preset": "^0.60.0",
-		"react-refresh": "^0.9.0"
+		"metro-react-native-babel-preset": "^0.60.0"
 	}
 }
