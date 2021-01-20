@@ -45,6 +45,14 @@ const App = (props: Props) => {
 		}
 	});
 
+	// useEffect(() => {
+	// 	// console.log(dev.progress);
+	// 	if (dev.available && dev?.progress?.percentage >= 1) {
+	// 		exit();
+	// 		console.log('compiled');
+	// 	}
+	// }, [dev.available, dev.progress]);
+
 	return <Box flexDirection="column">
 		<WingsInfo/>
 		{dev.available && <DevelopmentServer

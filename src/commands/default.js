@@ -6,6 +6,7 @@ import { createDevServer, } from '../utils/server/dev';
 import { renderConsole, } from '../console';
 import { consoleStore, } from '../console/store';
 import * as consoleActions from '../console/store/appAction';
+import packageInfo from '../../package.json';
 
 export default {
 	command: '$0',
@@ -42,7 +43,7 @@ export default {
 			.group(Object.keys(upOptions), '[up] Options:');
 	},
 	handler: async (args) => {
-		renderConsole();
+		// renderConsole();
 
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, chalk, } = globalModules;
@@ -50,19 +51,22 @@ export default {
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
 		const port = wingsConfig.port(args.port);
-		const webEntryExist = guessEntry();
+		const webEntry = guessEntry();
 		const nodeEntryExist = moduleExist('index.node.js', true);
 
-		if (!webEntryExist && !nodeEntryExist) {
+		console.log(chalk.gray('｢wings｣ cli'), chalk.magenta(`@${packageInfo.version}`));
+
+		if (!webEntry && !nodeEntryExist) {
 			console.log(chalk.red('No entry found! ')
 				+ 'you need at least one entry '
 				+ chalk.gray('e.g: ')
 				+ chalk.green('index.web.js, index.js, index.node.js'));
 		}
 
-		if (webEntryExist) {
+		if (webEntry) {
+			const serverAdress = chalk.blue(`http://${host}:${port}`);
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.green(webEntry)} detected, launching development server at ${serverAdress}`);
 			consoleStore.dispatch(consoleActions.toggleDevStatus(true));
-
 			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 			devConfigs.unshift(defaultDevConfigMiddleware);
 
@@ -103,6 +107,8 @@ export default {
 		}
 
 		if (nodeEntryExist) {
+			console.log(`${chalk.gray('｢wings｣ node entry')} ${chalk.green('index.node.js')} ${chalk.gray('detected.')}`);
+
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
 			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 

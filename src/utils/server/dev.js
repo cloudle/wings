@@ -14,7 +14,6 @@ export async function createDevServer(globals, compiler, devOptions) {
 
 	if (!isProduction) {
 		server.use(devMiddleware(compiler, devOptions));
-
 		server.use(hotMiddleware(compiler, {
 			log: false,
 		}));
@@ -23,9 +22,11 @@ export async function createDevServer(globals, compiler, devOptions) {
 	server.set('view engine', 'ejs');
 	server.use(express.static(staticPath));
 	server.use('/consoleDispatcher', bodyParser.json(), (req, res, next) => {
-		if (req.body.type) {
-			consoleStore.dispatch(req.body);
-		}
+		// console.log('hello');
+		// if (req.body.type) {
+		// 	console.log(req.body);
+			// consoleStore.dispatch(req.body);
+		// }
 	});
 
 	const listen = (port, host, callback) => {

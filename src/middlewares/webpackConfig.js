@@ -21,14 +21,14 @@ function progressHandler(percentage, message, ...args) {
 }
 
 export const defaultWebpackConfigMiddleware = (config, globals) => {
-	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, } = globals;
+	let brightFlag = false, initialBuild = true;
+	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, chalk, } = globals;
 	const appEntries = getEntries(wingsConfig.entries);
 	const env = wingsConfig.env();
 	const isProduction = wingsConfig.isProduction(env);
 	const publicPath = wingsConfig.publicPath(isProduction, env);
 	const conditionalPlugins = isProduction ? [] : [
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.ProgressPlugin(progressHandler),
 	];
 	const reactAvailable = moduleExist('react');
 	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
@@ -111,6 +111,23 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				template: wingsConfig.ejsTemplate,
 				filename: 'index.html',
 				...wingsConfig.htmlOptions,
+			}),
+			new progressBarPlugin({
+				width: 24,
+				complete: '#',
+				incomplete: chalk.gray('#'),
+				format: `｢${chalk.blue('build')}｣ [:bar] ${chalk.gray('(:elapsed seconds)')}`,
+				summary: false,
+				customSummary: (buildTime) => {
+					const alternatedColor = brightFlag ? (x => x) : chalk.gray;
+					const ruuiBullet = `${alternatedColor('｢wings｣')}`;
+					const buildType = initialBuild ? 'initial build' : 'rebuild';
+					const buildFlag = isProduction ? 'production bundle' : buildType;
+
+					console.log(ruuiBullet, chalk.gray(`${buildFlag} completed after`), buildTime);
+					brightFlag = !brightFlag;
+					initialBuild = false;
+				},
 			}),
 			...conditionalPlugins,
 		],

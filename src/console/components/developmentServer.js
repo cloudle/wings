@@ -16,6 +16,7 @@ type Props = {
 
 function DevelopmentServer(props: Props) {
 	const { message, stats, address = {}, progress, consoles, } = props;
+	const progressArgs = progress?.args || [];
 	const { text, color, loading, } = message;
 	const buildTime = extractBuildTime(stats);
 	const displayBuildTime = !loading && stats.startTime;
@@ -38,17 +39,13 @@ function DevelopmentServer(props: Props) {
 				<Spinner type="dots"/>
 				<Text> </Text>
 			</Fragment>}
-			<Text>{text}</Text>
+			<Text>
+				{loading ? argsToMessage(progressArgs) : text}
+			</Text>
 			{displayBuildTime && <Fragment>
 				<Text> after {buildTime}</Text>
 				<Text color={colors.gray}>ms</Text>
 			</Fragment>}
-		</Box>}
-		{consoles.length > 0 && <Box>
-			<Box {...iStyles.titleContainer}/>
-			<Box flexDirection="column" flexGrow={1}>
-				{consoles.map((item, i) => <Text key={i}>{item.join(' ')}</Text>)}
-			</Box>
 		</Box>}
 	</Box>;
 }
@@ -57,4 +54,14 @@ export default DevelopmentServer;
 
 function extractBuildTime(stats) {
 	return stats.endTime - stats.startTime;
+}
+
+function argsToMessage(args) {
+	const mergedMessage = args.join(' ');
+
+	if (mergedMessage.length > 50) {
+		return `${mergedMessage.substring(0, 50)}...`;
+	}
+
+	return mergedMessage;
 }
