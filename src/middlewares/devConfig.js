@@ -1,43 +1,28 @@
-import { consoleStore, } from '../console/store';
-import * as appActions from '../console/store/appAction';
+import { extractGlobalModules, } from '../utils';
 
 function reporter(middlewareOptions, options) {
+	const globalModules = extractGlobalModules();
+	const { chalk, } = globalModules;
 	const { log, state, stats, } = options;
 
 	if (state) {
-		consoleStore.dispatch(appActions.setDevStats(stats));
-		consoleStore.dispatch(appActions.setDevMessage({
-			text: 'Compiled successfully',
-			loading: false,
-		}));
+		const { warnings, errors, hash, emittedAssets, outputOptions, } = stats?.compilation;
+		const publicPath = outputOptions?.publicPath;
 		const displayStats = middlewareOptions.stats !== false;
 		const statsString = stats.toString(middlewareOptions.stats);
 
-		// console.log(stats);
-		// if (displayStats && statsString.trim().length) {
-		// 	if (stats.hasErrors()) {
-		// 		log.error(statsString);
-		// 	} else if (stats.hasWarnings()) {
-		// 		log.warn(statsString);
-		// 	} else {
-		// 		log.info(statsString);
-		// 	}
-		// }
-		//
-		// let message = 'Compiled successfully.';
-		//
-		// if (stats.hasErrors()) {
-		// 	message = 'Failed to compile.';
-		// } else if (stats.hasWarnings()) {
-		// 	message = 'Compiled with warnings.';
-		// }
+		if (displayStats && statsString.trim().length) {
+			if (stats.hasErrors()) {
+				const formattedError = chalk.red(`error${errors.length > 1 ? 's' : ''}`);
 
-		// log.info(message);
-	} else {
-		consoleStore.dispatch(appActions.setDevMessage({
-			text: 'Compiling..',
-			loading: true,
-		}));
+				console.log(`${chalk.gray('｢wings｣')} with ${chalk.yellow(errors.length)} ${formattedError}:`);
+				console.log(errors.toString());
+			} else if (stats.hasWarnings()) {
+				const formattedWarning = chalk.yellow(`warning${errors.length > 1 ? 's' : ''}`);
+				console.log(`${chalk.gray('｢wings｣')} with ${warnings.length} ${formattedWarning}`);
+				console.log(warnings.toString());
+			}
+		}
 	}
 }
 

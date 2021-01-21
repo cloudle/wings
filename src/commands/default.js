@@ -43,14 +43,13 @@ export default {
 			.group(Object.keys(upOptions), '[up] Options:');
 	},
 	handler: async (args) => {
-		// renderConsole();
-
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, chalk, } = globalModules;
 		const { moduleExist, guessEntry, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
 		const port = wingsConfig.port(args.port);
+		const publicPath = wingsConfig.publicPath(false);
 		const webEntry = guessEntry();
 		const nodeEntryExist = moduleExist('index.node.js', true);
 
@@ -65,7 +64,9 @@ export default {
 
 		if (webEntry) {
 			const serverAdress = chalk.blue(`http://${host}:${port}`);
-			console.log(`${chalk.gray('｢wings｣')} ${chalk.green(webEntry)} detected, launching development server at ${serverAdress}`);
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
+			console.log(`        ${chalk.yellow('launching')} ${serverAdress}`);
+			// console.log(`        ${chalk.yellow('public-path')}: ${chalk.blue(publicPath)}`);
 			consoleStore.dispatch(consoleActions.toggleDevStatus(true));
 			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 			devConfigs.unshift(defaultDevConfigMiddleware);

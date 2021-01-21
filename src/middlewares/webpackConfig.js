@@ -1,8 +1,12 @@
 import { resolve, } from 'path';
 import { isArray, } from 'lodash';
-import { guessEntry, moduleExist, optionsToQueryString, requireModule, resolveModule, } from '../utils/helper';
-import { consoleStore, } from '../console/store';
-import * as consoleActions from '../console/store/appAction';
+import {
+	guessEntry,
+	moduleExist,
+	optionsToQueryString,
+	requireModule,
+	resolveModule,
+} from '../utils/helper';
 
 function getEntries(configuredEntry) {
 	if (configuredEntry) {
@@ -12,17 +16,17 @@ function getEntries(configuredEntry) {
 	return [guessEntry()];
 }
 
-function progressHandler(percentage, message, ...args) {
-	consoleStore.dispatch(consoleActions.setDevProgress({
-		percentage,
-		message,
-		args,
-	}));
-}
-
 export const defaultWebpackConfigMiddleware = (config, globals) => {
 	let brightFlag = false, initialBuild = true;
-	const { wingsConfig, appJson, buildJson, webpack, htmlPlugin, progressBarPlugin, chalk, } = globals;
+	const {
+		wingsConfig,
+		appJson,
+		buildJson,
+		webpack,
+		htmlPlugin,
+		progressBarPlugin,
+		chalk,
+	} = globals;
 	const appEntries = getEntries(wingsConfig.entries);
 	const env = wingsConfig.env();
 	const isProduction = wingsConfig.isProduction(env);
@@ -113,18 +117,19 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				...wingsConfig.htmlOptions,
 			}),
 			new progressBarPlugin({
-				width: 24,
+				width: 18,
 				complete: '#',
 				incomplete: chalk.gray('#'),
 				format: `｢${chalk.blue('build')}｣ [:bar] ${chalk.gray('(:elapsed seconds)')}`,
 				summary: false,
-				customSummary: (buildTime) => {
+				customSummary: (time) => {
+					const buildTime = `${time.substring(0, time.length - 1)}${chalk.gray('s')}`;
 					const alternatedColor = brightFlag ? (x => x) : chalk.gray;
-					const ruuiBullet = `${alternatedColor('｢wings｣')}`;
-					const buildType = initialBuild ? 'initial build' : 'rebuild';
+					const ruuiBullet = `${chalk.gray('｢')}${alternatedColor('wings')}${chalk.gray('｣')}`;
+					const buildType = initialBuild ? 'initial build' : 'hot module';
 					const buildFlag = isProduction ? 'production bundle' : buildType;
 
-					console.log(ruuiBullet, chalk.gray(`${buildFlag} completed after`), buildTime);
+					console.log(ruuiBullet, chalk.gray(`${buildFlag} ${chalk.green('compiled')} in`), buildTime);
 					brightFlag = !brightFlag;
 					initialBuild = false;
 				},

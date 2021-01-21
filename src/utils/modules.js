@@ -1,4 +1,4 @@
-import {resolve, } from 'path';
+import { resolve, } from 'path';
 import { v4 as uuid, } from 'uuid';
 import * as wingsHelper from './helper';
 
