@@ -3,9 +3,6 @@ import { resolve, } from 'path';
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
 import { createDevServer, } from '../utils/server/dev';
-import { renderConsole, } from '../console';
-import { consoleStore, } from '../console/store';
-import * as consoleActions from '../console/store/appAction';
 import packageInfo from '../../package.json';
 
 export default {
@@ -48,8 +45,6 @@ export default {
 		const { moduleExist, guessEntry, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
-		const port = wingsConfig.port(args.port);
-		const publicPath = wingsConfig.publicPath(false);
 		const webEntry = guessEntry();
 		const nodeEntryExist = moduleExist('index.node.js', true);
 
@@ -62,12 +57,30 @@ export default {
 				+ chalk.green('index.web.js, index.js, index.node.js'));
 		}
 
+		if (nodeEntryExist) {
+			const ssrPort = wingsConfig.ssrPort(args.ssrPort);
+			const serverAddress = chalk.blue(`http://${host}:${ssrPort}`);
+
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('node entry')} ${chalk.green('index.node.js')} ${chalk.gray('detected')}`);
+			console.log(`        ${chalk.yellow('launching')} ${serverAddress}`);
+
+			const serverPath = resolve(__dirname, '../utils/server/node.js');
+			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
+
+			fork(babelNodePath, [serverPath], {
+				cwd: process.cwd(),
+				stdio: 'inherit',
+			});
+		}
+
 		if (webEntry) {
-			const serverAdress = chalk.blue(`http://${host}:${port}`);
-			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
-			console.log(`        ${chalk.yellow('launching')} ${serverAdress}`);
-			// console.log(`        ${chalk.yellow('public-path')}: ${chalk.blue(publicPath)}`);
-			consoleStore.dispatch(consoleActions.toggleDevStatus(true));
+			const port = wingsConfig.port(args.port);
+			const publicPath = wingsConfig.publicPath(false);
+			const serverAddress = chalk.blue(`http://${host}:${port}`);
+
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('web entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
+			console.log(`        ${chalk.yellow('launching')} ${serverAddress}`);
+
 			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 			devConfigs.unshift(defaultDevConfigMiddleware);
 
@@ -99,25 +112,7 @@ export default {
 			const devServer = await createDevServer(globalModules, compiler, devConfig);
 
 			devServer.listen(port, host, (error) => {
-				if (error) {
-					console.log(error);
-				} else {
-					consoleStore.dispatch(consoleActions.setDevAddress({ host, port }));
-				}
-			});
-		}
-
-		if (nodeEntryExist) {
-			console.log(`${chalk.gray('｢wings｣ node entry')} ${chalk.green('index.node.js')} ${chalk.gray('detected.')}`);
-
-			const serverPath = resolve(__dirname, '../utils/server/node.js');
-			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
-
-			consoleStore.dispatch(consoleActions.toggleNodeStatus(true));
-
-			fork(babelNodePath, [serverPath], {
-				cwd: process.cwd(),
-				stdio: 'inherit',
+				if (error) console.log(error);
 			});
 		}
 	},

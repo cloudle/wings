@@ -129,7 +129,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 					const buildType = initialBuild ? 'initial build' : 'hot module';
 					const buildFlag = isProduction ? 'production bundle' : buildType;
 
-					console.log(ruuiBullet, chalk.gray(`${buildFlag} ${chalk.green('compiled')} in`), buildTime);
+					console.log(ruuiBullet, chalk.gray(`${buildFlag} ${chalk.green('completed')} after`), buildTime);
 					brightFlag = !brightFlag;
 					initialBuild = false;
 				},
