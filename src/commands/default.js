@@ -68,7 +68,7 @@ export default {
 			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 
 			try {
-				fork(babelNodePath, ['--trace-warnings', serverPath], {
+				fork(babelNodePath, [serverPath], {
 					cwd: process.cwd(),
 					stdio: 'inherit',
 				});
