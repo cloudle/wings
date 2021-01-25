@@ -61,16 +61,21 @@ export default {
 			const ssrPort = wingsConfig.ssrPort(args.ssrPort);
 			const serverAddress = chalk.blue(`http://${host}:${ssrPort}`);
 
-			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('•')} ${chalk.yellow('node entry')} ${chalk.green('index.node.js')} ${chalk.gray('detected')}`);
-			console.log(`${chalk.gray('       ')} ${chalk.yellow('•')} ${chalk.yellow('launching')} ${serverAddress}`);
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('•')} ${chalk.yellow('node entry')} ${chalk.green('index.node.js')} ${chalk.gray('detected')}`);
+			console.log(`${chalk.gray('       ')} ${chalk.gray('•')} ${chalk.yellow('launching')} ${serverAddress}`);
 
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
 			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 
-			fork(babelNodePath, [serverPath], {
-				cwd: process.cwd(),
-				stdio: 'inherit',
-			});
+			try {
+				fork(babelNodePath, ['--trace-warnings', serverPath], {
+					cwd: process.cwd(),
+					stdio: 'inherit',
+				});
+			} catch (e) {
+				console.log(`｢wings｣ ${chalk.red('error during spawn')} ${chalk.green('index.node.js')}`);
+				console.log(e);
+			}
 		}
 
 		if (webEntry) {
@@ -78,8 +83,8 @@ export default {
 			const publicPath = wingsConfig.publicPath(false);
 			const serverAddress = chalk.blue(`http://${host}:${port}`);
 
-			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('•')} ${chalk.yellow('web entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
-			console.log(`${chalk.gray('       ')} ${chalk.yellow('•')} ${chalk.yellow('launching')} ${serverAddress}`);
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('•')} ${chalk.yellow('web entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
+			console.log(`${chalk.gray('       ')} ${chalk.gray('•')} ${chalk.yellow('launching')} ${serverAddress}`);
 
 			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 			devConfigs.unshift(defaultDevConfigMiddleware);

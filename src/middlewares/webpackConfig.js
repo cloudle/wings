@@ -126,7 +126,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 					const buildTime = `${time.substring(0, time.length - 1)}${chalk.gray('s')}`;
 					const alternatedColor = brightFlag ? (x => x) : chalk.gray;
 					const ruuiBullet = `${chalk.gray('｢')}${alternatedColor('wings')}${chalk.gray('｣')}`;
-					const buildType = initialBuild ? 'initial build' : 'hot module';
+					const buildType = initialBuild ? 'initial build' : 'hot module update';
 					const buildFlag = isProduction ? 'production bundle' : buildType;
 
 					console.log(ruuiBullet, chalk.gray(`${buildFlag} ${chalk.green('completed')} after`), buildTime);

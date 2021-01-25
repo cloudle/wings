@@ -1,15 +1,13 @@
-import axios from 'axios';
 import path from 'path';
 import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
 import moduleAlias from 'module-alias';
 import { extractGlobalModules, } from '../modules';
-import * as consoleActions from '../../console/store/appAction';
 
 moduleAlias.addAlias('react-native', 'react-native-web');
 
 const globalModules = extractGlobalModules();
-const { wingsConfig, wingsHelper, webpack, express, } = globalModules;
+const { wingsConfig, wingsHelper, webpack, express, chalk, } = globalModules;
 const { requireModule, } = wingsHelper;
 const env = wingsConfig.env();
 const isProduction = wingsConfig.isProduction(env);
@@ -26,19 +24,11 @@ if (!isProduction && configureServer) { /* <- hot reload server-side code on dev
 	});
 
 	watcher.on('all', (event, filename) => {
-		// const relativeFilename = path.relative(process.cwd(), filename);
-		// dispatch(consoleActions.setNodeHotUpdate({ event, filename: relativeFilename, }));
+		const relativeFilename = path.relative(process.cwd(), filename);
+
 		invalidate(path.resolve(filename));
+		console.log(`${chalk.gray('｢wings｣')} ${chalk.green('hot reloaded')} ${chalk.gray(relativeFilename)}`);
 	});
-
-	// const dispatch = action => axios.post(`http://${host}:${devPort}/consoleDispatcher`, action)
-	// 	.catch(e => console.log(e));
-	// const remoteLog = (...args) => dispatch(consoleActions.insertNodeConsole(args));
-
-	// global.console.log = remoteLog;
-	// global.console.warn = remoteLog;
-	// global.console.error = remoteLog;
-	// dispatch(consoleActions.setNodeAddress({ host, port, }));
 }
 
 const asyncWrap = result => (result && result.then
