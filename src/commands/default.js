@@ -78,8 +78,8 @@ export default {
 			const publicPath = wingsConfig.publicPath(false);
 			const serverAddress = chalk.blue(`http://${host}:${port}`);
 
-			console.log(`${chalk.gray('｢wings｣')} ${chalk.yellow('web entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
-			console.log(`        ${chalk.yellow('launching')} ${serverAddress}`);
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.green('•')} ${chalk.yellow('web entry')} ${chalk.green(webEntry)} ${chalk.gray('detected')}`);
+			console.log(`${chalk.gray('       ')} ${chalk.green('•')} ${chalk.yellow('launching')} ${serverAddress}`);
 
 			webpackConfigs.unshift(defaultWebpackConfigMiddleware);
 			devConfigs.unshift(defaultDevConfigMiddleware);
