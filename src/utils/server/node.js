@@ -6,12 +6,18 @@ import { requireModule, guessEntry, nodeEntries, } from '../helper';
 import { extractGlobalModules, } from '../modules';
 
 const express = requireModule('node_modules/express');
-const server = express();
-const nodeEntry = guessEntry(nodeEntries);
+const entry = guessEntry(nodeEntries);
+const nodeEntry = requireModule(entry);
 const configureServer = nodeEntry?.configureServer;
 
+const asyncWrap = result => (result && result.then
+	? result
+	: new Promise(resolve => resolve(result)));
+
 if (configureServer) {
-	asyncWrap(configureServer(server).then(() => {
+	const server = express();
+
+	asyncWrap(configureServer(server)).then(() => {
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, chalk, } = globalModules;
 		const env = wingsConfig.env();
@@ -38,7 +44,7 @@ if (configureServer) {
 		server.use(express.static(staticPath));
 
 		server.use((req, res, next) => {
-			const updatedEntry = require(path.resolve(process.cwd(), nodeEntry));
+			const updatedEntry = require(path.resolve(process.cwd(), entry));
 
 			if (updatedEntry.configureRouter) {
 				updatedEntry.configureRouter(server, globalModules)(req, res, next);
@@ -48,9 +54,5 @@ if (configureServer) {
 		server.listen(port, host, () => {
 			// console.log('server is ready!');
 		});
-	}));
+	});
 }
-
-const asyncWrap = result => (result && result.then
-	? result
-	: new Promise(resolve => resolve(result)));
