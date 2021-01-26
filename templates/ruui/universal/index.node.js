@@ -1,10 +1,14 @@
 import { AppRegistry, } from 'react-native';
 import reactDom from 'react-dom/server';
+import { addAliases, } from 'module-alias';
+
 import App from './src';
+import { shared, node, } from './configurations/moduleAliases';
 
-AppRegistry.registerComponent('undefined', () => App);
+export const configureServer = async (server) => {
+	addAliases({ ...shared, ...node, });
+	AppRegistry.registerComponent('undefined', () => App);
 
-export const configureServer = async (server, sharedModules) => {
 	return server;
 };
 

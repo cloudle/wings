@@ -120,7 +120,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				width: 18,
 				complete: '#',
 				incomplete: chalk.gray('#'),
-				format: `｢${chalk.blue('build')}｣ [:bar] ${chalk.gray('(:elapsed seconds)')}`,
+				format: `${chalk.gray('｢')}${chalk.blue('build')}${chalk.gray('｣')} [:bar] ${chalk.gray('(:elapsed seconds)')}`,
 				summary: false,
 				customSummary: (time) => {
 					const buildTime = `${time.substring(0, time.length - 1)}${chalk.gray('s')}`;

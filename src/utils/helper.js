@@ -38,9 +38,10 @@ export const requireModule = (directions, req = require) => {
 
 export const resolveModule = directions => requireModule(directions, require.resolve);
 
-const conventionalEntries = ['index.web.js', 'index.js'];
+export const webEntries = ['index.web.js', 'index.js', ];
+export const nodeEntries = ['index.node.js', 'server.js', 'node.js', ];
 
-export const guessEntry = (searchList = conventionalEntries) => {
+export const guessEntry = (searchList = webEntries) => {
 	for (let i = 0; i < searchList.length; i += 1) {
 		const searchPath = resolve(process.cwd(), searchList[i]);
 

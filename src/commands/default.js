@@ -42,26 +42,30 @@ export default {
 	handler: async (args) => {
 		const globalModules = extractGlobalModules();
 		const { wingsConfig, wingsHelper, webpack, chalk, } = globalModules;
-		const { moduleExist, guessEntry, } = wingsHelper;
+		const { guessEntry, webEntries, nodeEntries, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
-		const webEntry = guessEntry();
-		const nodeEntryExist = moduleExist('index.node.js', true);
+		const webEntry = guessEntry(webEntries);
+		const nodeEntry = guessEntry(nodeEntries);
 
 		console.log(chalk.gray('｢wings｣ cli'), chalk.magenta(`@${packageInfo.version}`));
 
-		if (!webEntry && !nodeEntryExist) {
+		if (!webEntry && !nodeEntry) {
+			const allEntries = [...webEntries, ...nodeEntries].join(', ');
+			const formattedEntries = allEntries.substring(0, allEntries.length - 2);
+
 			console.log(chalk.red('No entry found! ')
-				+ 'you need at least one entry '
-				+ chalk.gray('e.g: ')
-				+ chalk.green('index.web.js, index.js, index.node.js'));
+				+ 'you need at least one entry on the following list:\n'
+				+ chalk.gray('[')
+				+ chalk.green(allEntries)
+				+ chalk.gray(']'));
 		}
 
-		if (nodeEntryExist) {
+		if (nodeEntry) {
 			const ssrPort = wingsConfig.ssrPort(args.ssrPort);
 			const serverAddress = chalk.blue(`http://${host}:${ssrPort}`);
 
-			console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('•')} ${chalk.yellow('node entry')} ${chalk.green('index.node.js')} ${chalk.gray('detected')}`);
+			console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('•')} ${chalk.yellow('node entry')} ${chalk.green(nodeEntry)} ${chalk.gray('detected')}`);
 			console.log(`${chalk.gray('       ')} ${chalk.gray('•')} ${chalk.yellow('launching')} ${serverAddress}`);
 
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
@@ -73,7 +77,7 @@ export default {
 					stdio: 'inherit',
 				});
 			} catch (e) {
-				console.log(`｢wings｣ ${chalk.red('error during spawn')} ${chalk.green('index.node.js')}`);
+				console.log(`｢wings｣ ${chalk.red('error during spawn')} ${chalk.green(nodeEntry)}`);
 				console.log(e);
 			}
 		}
