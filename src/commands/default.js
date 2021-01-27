@@ -52,7 +52,6 @@ export default {
 
 		if (!webEntry && !nodeEntry) {
 			const allEntries = [...webEntries, ...nodeEntries].join(', ');
-			const formattedEntries = allEntries.substring(0, allEntries.length - 2);
 
 			console.log(chalk.red('No entry found! ')
 				+ 'you need at least one entry on the following list:\n'
@@ -69,13 +68,9 @@ export default {
 			console.log(`${chalk.gray('       ')} ${chalk.gray('•')} ${chalk.yellow('launching')} ${serverAddress}`);
 
 			const serverPath = resolve(__dirname, '../utils/server/node.js');
-			const babelNodePath = resolve(__dirname, '../../node_modules/@babel/node/bin/babel-node.js');
 
 			try {
-				fork(babelNodePath, [serverPath], {
-					cwd: process.cwd(),
-					stdio: 'inherit',
-				});
+				fork(serverPath, { cwd: process.cwd(), stdio: 'inherit', });
 			} catch (e) {
 				console.log(`｢wings｣ ${chalk.red('error during spawn')} ${chalk.green(nodeEntry)}`);
 				console.log(e);

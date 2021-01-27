@@ -1,12 +1,10 @@
 import { AppRegistry, } from 'react-native';
 import reactDom from 'react-dom/server';
-import { addAliases, } from 'module-alias';
 
 import App from './src';
-import { shared, node, } from './configurations/moduleAliases';
 
 export const configureServer = async (server) => {
-	addAliases({ ...shared, ...node, });
+	require('./configurations/postInstallation');
 	AppRegistry.registerComponent('undefined', () => App);
 
 	return server;
@@ -19,9 +17,6 @@ export const configureRouter = (server, { wingsConfig, express, }) => {
 	const publicPath = wingsConfig.publicPath(isProduction, env) || '/';
 
 	const router = Router();
-	router.use('/ap', (req, res) => {
-		res.json({ message: 'hello world!', });
-	});
 
 	router.use('*', (req, res, next) => {
 		const initialProps = { ssrLocation: req.baseUrl, ssrContext: {} };

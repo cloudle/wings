@@ -1,3 +1,5 @@
+require('@babel/register');
+
 import path from 'path';
 import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
@@ -55,7 +57,7 @@ if (entry) {
 		});
 
 		server.listen(port, host, () => {
-			// console.log('server is ready!');
+			// console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('server launch completed')}`);
 		});
 	});
 }
