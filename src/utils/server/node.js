@@ -5,9 +5,10 @@ import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
 import { addAliases, } from 'module-alias';
 
-import { requireModule, guessEntry, nodeEntries, } from '../helper';
+import { requireModule, guessEntry, nodeEntries, webEntries, } from '../helper';
 import { extractGlobalModules, } from '../modules';
 
+const webEntry = guessEntry(webEntries);
 const entry = guessEntry(nodeEntries);
 
 const asyncWrap = result => (result && result.then
@@ -57,7 +58,9 @@ if (entry) {
 		});
 
 		server.listen(port, host, () => {
-			// console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('server launch completed')}`);
+			if (!webEntry) {
+				console.log(`${chalk.gray('｢wings｣')} ${chalk.green('server launch completed')}`);
+			}
 		});
 	});
 }
