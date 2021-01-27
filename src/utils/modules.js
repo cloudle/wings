@@ -43,11 +43,11 @@ const defaultWingsConfig = {
 	optimizeMode: () => !!process.env.OPTIMIZE,
 	buildId: uuid,
 	output: resolve(process.cwd()),
-	moduleAlias: {
+	moduleAlias: () => ({
 		global: {},
 		web: {},
 		node: {},
-	},
+	}),
 	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
 	publicPath: (isProduction, env) => '/',
