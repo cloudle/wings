@@ -1,31 +1,34 @@
 import path from 'path';
 import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
+import { addAliases, } from 'module-alias';
 
 import { requireModule, guessEntry, nodeEntries, } from '../helper';
 import { extractGlobalModules, } from '../modules';
 
-const express = requireModule('node_modules/express');
 const entry = guessEntry(nodeEntries);
-const nodeEntry = requireModule(entry);
-const configureServer = nodeEntry?.configureServer;
 
 const asyncWrap = result => (result && result.then
 	? result
 	: new Promise(resolve => resolve(result)));
 
-if (configureServer) {
+if (entry) {
+	const globalModules = extractGlobalModules();
+	const { wingsConfig, chalk, express, } = globalModules;
+	const env = wingsConfig.env();
+	const isProduction = wingsConfig.isProduction(env);
+	const alias = wingsConfig.moduleAlias(isProduction);
+	const host = wingsConfig.host();
+	const port = wingsConfig.ssrPort();
+	const staticPath = wingsConfig.staticPath(env);
 	const server = express();
 
-	asyncWrap(configureServer(server)).then(() => {
-		const globalModules = extractGlobalModules();
-		const { wingsConfig, chalk, } = globalModules;
-		const env = wingsConfig.env();
-		const isProduction = wingsConfig.isProduction(env);
-		const host = wingsConfig.host();
-		const port = wingsConfig.ssrPort();
-		const staticPath = wingsConfig.staticPath(env);
+	addAliases({ ...alias.global, ...alias.node, });
 
+	const nodeEntry = requireModule(entry);
+	const configureServer = nodeEntry?.configureServer || (() => {});
+
+	asyncWrap(configureServer(server, globalModules)).then(() => {
 		if (!isProduction) { /* <- hot reload server-side code on development mode */
 			const watcher = chokidar.watch(process.cwd(), {
 				ignoreInitial: true,

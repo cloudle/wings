@@ -30,6 +30,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 	const appEntries = getEntries(wingsConfig.entries);
 	const env = wingsConfig.env();
 	const isProduction = wingsConfig.isProduction(env);
+	const alias = wingsConfig.moduleAlias(isProduction);
 	const publicPath = wingsConfig.publicPath(isProduction, env);
 	const conditionalPlugins = isProduction ? [] : [
 		new webpack.HotModuleReplacementPlugin(),
@@ -74,9 +75,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		},
 		resolve: {
 			mainFields: ['browser', 'main', 'module'],
-			alias: {
-				'react-native': 'react-native-web',
-			},
+			alias: { ...alias.global, ...alias.web, },
 			modules: [process.cwd(), 'node_modules'],
 			extensions: ['.web.js', '.js'],
 		},
