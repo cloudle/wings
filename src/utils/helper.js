@@ -1,6 +1,9 @@
 import { resolve, } from 'path';
 import { existsSync, } from 'fs';
 import { isArray, isEmpty, } from 'lodash';
+import axios from 'axios';
+import { gt, } from 'semver';
+import localMetrics from '../../package.json';
 
 function ensureArray(value) {
 	if (isArray(value)) {
@@ -82,4 +85,20 @@ export const getEjsTemplate = () => {
 	}
 
 	return undefined;
+};
+
+const chalk = requireModule('node_modules/chalk');
+
+export const checkForUpdates = async () => {
+	try {
+		const { data: remoteMetrics, } = await axios.get('https://registry.npmjs.org/wings-cli');
+		const latest = remoteMetrics?.['dist-tags']?.latest;
+		const formattedLatest = chalk.magenta(`wings-cli@${latest}`);
+		const installCommand = chalk.yellow(`npm i -g wings-cli@${latest}`);
+
+		if (gt(latest, localMetrics.version)) {
+			console.log(chalk.gray(`｢wings｣ • ${formattedLatest} is available..`));
+			console.log(chalk.gray(`        • ${installCommand} to install (recommended)`));
+		}
+	} catch (e) {}
 };

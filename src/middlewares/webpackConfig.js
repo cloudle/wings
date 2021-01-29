@@ -6,6 +6,7 @@ import {
 	optionsToQueryString,
 	requireModule,
 	resolveModule,
+	checkForUpdates,
 } from '../utils/helper';
 
 function getEntries(configuredEntry) {
@@ -128,6 +129,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 					const buildType = initialBuild ? 'initial build' : 'hot module update';
 					const buildFlag = isProduction ? 'production bundle' : buildType;
 
+					if (!isProduction && initialBuild) checkForUpdates();
 					console.log(ruuiBullet, chalk.gray(`${buildFlag} ${chalk.green('completed')} after`), buildTime);
 					brightFlag = !brightFlag;
 					initialBuild = false;

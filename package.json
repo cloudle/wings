@@ -1,6 +1,6 @@
 {
   "name": "wings-cli",
-  "version": "0.2.12",
+  "version": "0.2.15",
   "description": "CLI tool that accelerate Node/UI development",
   "keywords": [],
   "author": "Cloud Le",
@@ -68,6 +68,7 @@
     "progress-bar-webpack-plugin": "^1.12.1",
     "react": "^16.13.1",
     "react-refresh": "^0.9.0",
+    "semver": "^7.3.4",
     "uuid": "^3.3.3",
     "webpack": "^5.10.1",
     "webpack-dev-middleware": "^3.7.2",
