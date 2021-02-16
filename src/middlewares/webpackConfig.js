@@ -1,5 +1,6 @@
 import { resolve, } from 'path';
 import { isArray, } from 'lodash';
+import { writeFile, } from '../utils/fileProcessing';
 import {
 	guessEntry,
 	moduleExist,
@@ -24,15 +25,18 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		appJson,
 		buildJson,
 		webpack,
-		htmlPlugin,
-		progressBarPlugin,
+		HtmlPlugin,
+		TerserPlugin,
+		ProgressBarPlugin,
 		chalk,
 	} = globals;
 	const appEntries = getEntries(wingsConfig.entries);
 	const env = wingsConfig.env();
+	const buildId = wingsConfig.buildId();
 	const isProduction = wingsConfig.isProduction(env);
 	const alias = wingsConfig.moduleAlias(isProduction);
 	const publicPath = wingsConfig.publicPath(isProduction, env);
+	const staticPath = wingsConfig.staticPath(isProduction);
 	const conditionalPlugins = isProduction ? [] : [
 		new webpack.HotModuleReplacementPlugin(),
 	];
@@ -42,7 +46,10 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 	const hot = [hotMiddlewareClientSrc];
 	const babelPlugins = [];
 
-	if (!isProduction && reactAvailable) {
+	if (isProduction) {
+		writeFile(resolve(process.cwd(), staticPath, 'build.json'),
+			JSON.stringify({ ...buildJson, buildId, }, null, 2));
+	} else if (!isProduction && reactAvailable) {
 		const ReactRefreshWebpackPlugin = requireModule('node_modules/@pmmmwh/react-refresh-webpack-plugin');
 
 		conditionalPlugins.push(new ReactRefreshWebpackPlugin());
@@ -56,18 +63,23 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		entry: {
 			app: {
 				import: isProduction ? appEntries : [...hot, ...appEntries],
-				filename: isProduction ? '[name].min.js' : '[name].js',
+				filename: isProduction ? `${buildId}.js` : '[name].js',
 			},
 		},
 		optimization: {
 			minimize: isProduction,
+			minimizer: [
+				new TerserPlugin({
+					extractComments: false,
+				}),
+			],
 			moduleIds: 'named',
 		},
 		output: {
 			publicPath,
-			path: wingsConfig.output,
-			filename: isProduction ? '[name].min.js' : '[name].js',
-			chunkFilename: '[name].js',
+			path: resolve(process.cwd(), staticPath),
+			filename: '[name].js',
+			chunkFilename: '[id].js',
 		},
 		resolveLoader: {
 			modules: [
@@ -108,7 +120,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				ENV: JSON.stringify(env),
 				'process.env.NODE_ENV': JSON.stringify(env),
 			}),
-			new htmlPlugin({
+			new HtmlPlugin({
 				isProduction,
 				publicPath,
 				appName: appJson.displayName || appJson.name || 'Wings',
@@ -116,7 +128,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				filename: 'index.html',
 				...wingsConfig.htmlOptions,
 			}),
-			new progressBarPlugin({
+			new ProgressBarPlugin({
 				width: 18,
 				complete: '#',
 				incomplete: chalk.gray('#'),

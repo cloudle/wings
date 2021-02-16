@@ -11,31 +11,6 @@ export default {
 	desc: 'start development environment',
 	usage: '',
 	builder: (yargs) => {
-		const upOptions = {
-			port: {
-				alias: 'p',
-				default: 3000,
-				describe: 'Port for development server',
-				type: 'number',
-			},
-			host: {
-				alias: 'o',
-				describe: 'Host/ip of the server',
-				type: 'string',
-			},
-			ssrPort: {
-				alias: 's',
-				default: 3005,
-				describe: 'Port for "ssr" server',
-				type: 'number',
-			},
-			devOnly: {
-				alias: 'd',
-				describe: 'Force disable ssr',
-				type: 'boolean',
-			},
-		};
-
 		return yargs.options(upOptions)
 			.group(Object.keys(upOptions), '[up] Options:');
 	},
@@ -119,5 +94,30 @@ export default {
 				if (error) console.log(error);
 			});
 		}
+	},
+};
+
+const upOptions = {
+	port: {
+		alias: 'p',
+		type: 'number',
+		default: 3000,
+		describe: 'Port for development server',
+	},
+	host: {
+		alias: 'o',
+		type: 'string',
+		describe: 'Host/ip of the server',
+	},
+	ssrPort: {
+		alias: 's',
+		type: 'number',
+		default: 3005,
+		describe: 'Port for "ssr" server',
+	},
+	devOnly: {
+		alias: 'd',
+		type: 'boolean',
+		describe: 'Force disable ssr',
 	},
 };

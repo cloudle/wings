@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { join, extname, } from 'path';
+import { join, extname, dirname } from 'path';
 
 const binaryExtensions = ['.png', '.jar'];
 
@@ -102,4 +102,14 @@ export const copyAndReplace = (srcPath, destPath, replacements, contentChangedCa
 			fs.writeFileSync(destPath, content, { encoding: 'utf8', mode: srcPermissions });
 		}
 	}
+};
+
+export const writeFile = (file, data) => {
+	const currentDir = dirname(file);
+
+	if (!fs.existsSync(currentDir)) {
+		fs.mkdirSync(currentDir, { recursive: true, });
+	}
+
+	fs.writeFileSync(file, data);
 };

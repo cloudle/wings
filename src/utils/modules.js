@@ -5,27 +5,32 @@ import * as wingsHelper from './helper';
 const { requireModule, getEjsTemplate, } = wingsHelper;
 
 export const extractGlobalModules = () => {
-	const wingsConfig = requireModule('wings.config.js') || {},
-		appJson = requireModule('app.json') || defaultAppJson,
-		buildJson = requireModule('wings/build.json'),
-		modules = { wingsConfig, wingsHelper, appJson, buildJson, },
-		extraModules = wingsConfig.resolves || {},
-		globalModuleMap = {
-			chalk: 'node_modules/chalk',
-			webpack: 'node_modules/webpack',
-			express: 'node_modules/express',
-			babelLoader: 'node_modules/babel-loader',
-			progressBarPlugin: 'node_modules/progress-bar-webpack-plugin',
-			htmlPlugin: 'node_modules/html-webpack-plugin',
-			devServer: 'node_modules/webpack-dev-server',
-			...extraModules,
-		};
+	const wingsConfig = requireModule('wings.config.js') || {};
+	const appJson = requireModule('app.json') || defaultAppJson;
+	const modules = { wingsConfig, wingsHelper, appJson, };
+	const extraModules = wingsConfig.resolves || {};
+	const globalModuleMap = {
+		chalk: 'node_modules/chalk',
+		webpack: 'node_modules/webpack',
+		express: 'node_modules/express',
+		babelLoader: 'node_modules/babel-loader',
+		ProgressBarPlugin: 'node_modules/progress-bar-webpack-plugin',
+		HtmlPlugin: 'node_modules/html-webpack-plugin',
+		TerserPlugin: 'node_modules/terser-webpack-plugin',
+		devServer: 'node_modules/webpack-dev-server',
+		...extraModules,
+	};
 
 	Object.keys(defaultWingsConfig).forEach((key) => {
 		if (!wingsConfig[key]) {
 			wingsConfig[key] = defaultWingsConfig[key];
 		}
 	});
+
+	const env = wingsConfig.env();
+	const staticPath = wingsConfig.staticPath(env);
+
+	modules.buildJson = requireModule(`${staticPath}/build.json`) || {};
 
 	Object.keys(globalModuleMap).forEach((moduleName) => {
 		modules[moduleName] = requireModule(globalModuleMap[moduleName]);
@@ -42,12 +47,12 @@ const defaultWingsConfig = {
 	ssrPort: cli => process.env.SSR_PORT || cli || 3005,
 	optimizeMode: () => !!process.env.OPTIMIZE,
 	buildId: uuid,
-	output: resolve(process.cwd()),
 	moduleAlias: () => ({
 		global: {},
 		web: {},
 		node: {},
 	}),
+	keepPreviousBuild: (isProduction) => false,
 	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
 	publicPath: (isProduction, env) => '/',
