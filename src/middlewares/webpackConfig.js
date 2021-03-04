@@ -111,7 +111,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 				test: /\.(png|jpg|svg|ttf)$/,
 				loader: 'file-loader',
 				options: {
-					name: '[hash].[ext]',
+					name: '[name].[ext]',
 				},
 			}, ],
 		},
