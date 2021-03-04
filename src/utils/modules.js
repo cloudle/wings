@@ -17,7 +17,7 @@ export const extractGlobalModules = () => {
 		ProgressBarPlugin: 'node_modules/progress-bar-webpack-plugin',
 		HtmlPlugin: 'node_modules/html-webpack-plugin',
 		TerserPlugin: 'node_modules/terser-webpack-plugin',
-		devServer: 'node_modules/webpack-dev-server',
+		DevServer: 'node_modules/webpack-dev-server',
 		...extraModules,
 	};
 

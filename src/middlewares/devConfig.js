@@ -65,7 +65,8 @@ export const defaultDevConfigMiddleware = (config, globals) => {
 			error: true,
 			cachedAssets: optimizeMode,
 		},
-		quiet: !optimizeMode,
+		clientLogLevel: 'silent',
+		// quiet: !optimizeMode,
 		noInfo: !optimizeMode,
 		overlay: true,
 	};

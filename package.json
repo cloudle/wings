@@ -1,6 +1,6 @@
 {
   "name": "wings-cli",
-  "version": "0.2.16",
+  "version": "0.2.18",
   "description": "CLI tool that accelerate Node/UI development",
   "keywords": [],
   "author": "Cloud Le",
@@ -72,8 +72,6 @@
     "terser-webpack-plugin": "^5.1.1",
     "uuid": "^3.3.3",
     "webpack": "^5.10.1",
-    "webpack-dev-middleware": "^3.7.2",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-dev-server": "^3.11.2"
   }
 }

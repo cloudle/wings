@@ -4,7 +4,6 @@ import { writeFile, } from '../utils/fileProcessing';
 import {
 	guessEntry,
 	moduleExist,
-	optionsToQueryString,
 	requireModule,
 	resolveModule,
 	checkForUpdates,
@@ -41,9 +40,10 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 		new webpack.HotModuleReplacementPlugin(),
 	];
 	const reactAvailable = moduleExist('react');
-	const hotQueryString = optionsToQueryString(wingsConfig.hotOptions);
-	const hotMiddlewareClientSrc = resolve(__dirname, '../../node_modules', `webpack-hot-middleware/client${hotQueryString}`);
-	const hot = [hotMiddlewareClientSrc];
+	const hot = [
+		resolve(__dirname, '../../node_modules', `webpack-dev-server/client?${publicPath}`),
+		resolve(__dirname, '../../node_modules', 'webpack/hot/only-dev-server'),
+	];
 	const babelPlugins = [];
 
 	if (isProduction) {

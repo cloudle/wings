@@ -13,14 +13,6 @@ function ensureArray(value) {
 	return [value];
 }
 
-export function optionsToQueryString(options) {
-	if (isEmpty(options)) {
-		return '';
-	}
-
-	return Object.keys(options).reduce((acc, next) => `${acc}${next}=${options[next]}&`, '?').slice(0, -1);
-}
-
 export const requireModule = (directions, req = require) => {
 	directions = ensureArray(directions);
 

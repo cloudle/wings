@@ -2,7 +2,6 @@ import { fork, } from 'child_process';
 import { resolve, } from 'path';
 import { defaultDevConfigMiddleware, defaultWebpackConfigMiddleware, } from '../middlewares';
 import { extractGlobalModules, } from '../utils';
-import { createDevServer, } from '../utils/server/dev';
 import packageInfo from '../../package.json';
 
 export default {
@@ -16,7 +15,7 @@ export default {
 	},
 	handler: async (args) => {
 		const globalModules = extractGlobalModules();
-		const { wingsConfig, wingsHelper, webpack, chalk, } = globalModules;
+		const { wingsConfig, wingsHelper, webpack, DevServer, chalk, } = globalModules;
 		const { guessEntry, webEntries, nodeEntries, } = wingsHelper;
 		const { webpackConfigs, devConfigs, } = wingsConfig;
 		const host = wingsConfig.host(args.host);
@@ -42,7 +41,7 @@ export default {
 			console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('•')} ${chalk.yellow('node entry')} ${chalk.green(nodeEntry)} ${chalk.gray('detected')}`);
 			console.log(`${chalk.gray('       ')} ${chalk.gray('•')} ${chalk.yellow('launching')} ${serverAddress}`);
 
-			const serverPath = resolve(__dirname, '../utils/server/node.js');
+			const serverPath = resolve(__dirname, '../utils/nodeEntry.js');
 
 			try {
 				fork(serverPath, { cwd: process.cwd(), stdio: 'inherit', });
@@ -88,7 +87,7 @@ export default {
 			}
 
 			const compiler = webpack(webpackConfig);
-			const devServer = await createDevServer(globalModules, compiler, devConfig);
+			const devServer = new DevServer(compiler, devConfig);
 
 			devServer.listen(port, host, (error) => {
 				if (error) console.log(error);
