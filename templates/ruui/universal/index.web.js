@@ -8,5 +8,3 @@ AppRegistry.runApplication('app', {
 	initialProps: {},
 	rootTag: document.getElementById('root'),
 });
-
-if (module.hot) module.hot.accept();
