@@ -4,9 +4,8 @@ import path from 'path';
 import chokidar from 'chokidar';
 import invalidate from 'invalidate-module';
 import { addAliases, } from 'module-alias';
-
-import { requireModule, guessEntry, nodeEntries, webEntries, checkForUpdates, } from '../helper';
-import { extractGlobalModules, } from '../modules';
+import { requireModule, guessEntry, nodeEntries, webEntries, checkForUpdates, } from './helper';
+import { extractGlobalModules, } from './modules';
 
 const webEntry = guessEntry(webEntries);
 const entry = guessEntry(nodeEntries);
