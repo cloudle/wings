@@ -1,4 +1,14 @@
 {
+  "name": "wings-node-graphql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",

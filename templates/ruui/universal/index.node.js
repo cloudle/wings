@@ -4,7 +4,6 @@ import reactDom from 'react-dom/server';
 import App from './src';
 
 export const configureServer = async (server) => {
-	require('./configurations/postInstallation');
 	AppRegistry.registerComponent('undefined', () => App);
 
 	return server;
