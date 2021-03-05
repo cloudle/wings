@@ -31,15 +31,11 @@ export const installDependencies = (templatePath) => {
 	const packageJsonExist = fs.existsSync(packageJsonPath);
 
 	if (packageJsonExist) {
-		const packageConfigure = require(packageJsonPath) || {};
-		const { dependencies, devDependencies, } = packageConfigure;
-
-		installPackages(dependencies);
-		installPackages(devDependencies, true);
+		installPackages();
 	}
 };
 
-const templateExclusions = ['package.json'];
+const templateExclusions = [];
 
 export const copyBoilerplateFiles = (templatePath) => {
 	walk(templatePath).forEach((absoluteSrcPath) => {

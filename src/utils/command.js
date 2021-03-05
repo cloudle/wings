@@ -25,18 +25,22 @@ const getSaveFragment = (yarnVersion, isDevelopment) => {
 };
 
 export const installPackages = (packageHash, isDevelopment, forceNpm) => {
-	if (!packageHash) return;
-	const packageKeys = Object.keys(packageHash);
-	if (!packageKeys.length) return;
-
+	let installCommand;
 	const yarnVersion = !forceNpm && getYarnVersion();
-	const addFragment = yarnVersion ? 'yarn add' : 'npm install';
-	const saveFragment = getSaveFragment(yarnVersion, isDevelopment);
-	const packageNames = packageKeys.map((name) => {
-		const version = packageHash[name];
-		return getPackageName(name, version);
-	}).join(' ');
-	const installCommand = `${addFragment}${saveFragment}${packageNames}`;
+
+	if (packageHash) {
+		const packageKeys = Object.keys(packageHash);
+		if (!packageKeys.length) return;
+		const addFragment = yarnVersion ? 'yarn add' : 'npm install';
+		const saveFragment = getSaveFragment(yarnVersion, isDevelopment);
+		const packageNames = packageKeys.map((name) => {
+			const version = packageHash[name];
+			return getPackageName(name, version);
+		}).join(' ');
+		installCommand = `${addFragment}${saveFragment}${packageNames}`;
+	} else {
+		installCommand = yarnVersion ? 'yarn install' : 'npm install';
+	}
 
 	try {
 		execSync(installCommand, { stdio: 'inherit' });

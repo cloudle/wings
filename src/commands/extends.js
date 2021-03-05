@@ -18,8 +18,8 @@ export default {
 		const templatePath = getTemplatePath(group, feature);
 
 		if (templatePath) {
-			installDependencies(templatePath);
 			copyBoilerplateFiles(templatePath);
+			installDependencies(templatePath);
 		} else {
 			suggestTemplates(group, feature, globalModules);
 		}
