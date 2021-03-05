@@ -1,0 +1,15 @@
+# OSX
+#
+.DS_Store
+selfsigned.*
+
+.idea
+
+lambda/configs.js
+lambda/commonjs
+lambda/.serverless
+
+node_modules
+
+npm-debug.log
+yarn-error.log

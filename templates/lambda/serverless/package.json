@@ -1,0 +1,31 @@
+{
+  "name": "wings-lambda-serverless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.node.js",
+  "scripts": {
+    "build": "rm -rf ./lambda/commonjs && bob build",
+    "deploy": "yarn build && cd lambda && serverless deploy && cd ..",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.10.4",
+    "aws-sdk": "^2.828.0",
+    "metro-react-native-babel-preset": "^0.60.0",
+    "morgan": "^1.10.0"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5"
+  },
+  "@react-native-community/bob": {
+    "source": "src",
+    "output": "lambda",
+    "targets": [
+      "commonjs"
+    ]
+  }
+}
