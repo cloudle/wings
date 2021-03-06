@@ -1,0 +1,9 @@
+{
+	"name": "wings-lambda-graphql",
+	"version": "0.0.12",
+	"description": "",
+	"dependencies": {
+		"apollo-server-lambda": "^2.19.0",
+		"graphql": "^15.4.0"
+	}
+}

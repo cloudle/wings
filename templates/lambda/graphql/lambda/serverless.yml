@@ -1,0 +1,70 @@
+service: wings-lambda
+provider:
+  name: aws
+  region: us-east-1
+  profile: default
+  memorySize: 256
+  stage: dev
+  runtime: nodejs12.x
+  environment:
+    isLambda: true
+    service: ${self:service}
+    stage: ${opt:stage, self:provider.stage}
+    region: ${opt:region, self:provider.region}
+    jwtSecret: ${file(./configs.js):jwtSecret}
+package:
+  individually: true
+  exclude:
+    - commonjs/**
+    - node_modules/**
+    - configs.js
+    - yarn.lock
+functions:
+  greeting:
+    handler: commonjs/greeting/lambda.handler
+    package:
+      include:
+        - node_modules/**
+        - commonjs/greeting/**
+        - commonjs/shared/**
+    events:
+      - http:
+          path: greeting
+          method: get
+  graphql:
+    handler: commonjs/graphql/lambda.handler
+    package:
+      include:
+        - node_modules/**
+        - commonjs/graphql/**
+        - commonjs/typeDefinitions/**
+        - commonjs/shared/**
+    events:
+      - http:
+          path: graphql
+          method: post
+        cors:
+          origin: "*"
+          headers:
+            - Content-Type
+            - X-Amz-Date
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+            - Authorization
+            - Access-Control-Allow-Headers
+            - Access-Control-Allow-Origin
+          allowCredentials: true
+      - http:
+          path: graphql
+          method: get
+          cors:
+            origin: "*"
+            headers:
+              - Content-Type
+              - X-Amz-Date
+              - X-Amz-Security-Token
+              - X-Amz-User-Agent
+              - Authorization
+              - Access-Control-Allow-Headers
+              - Access-Control-Allow-Origin
+            allowCredentials: true

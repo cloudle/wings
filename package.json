@@ -1,6 +1,6 @@
 {
   "name": "wings-cli",
-  "version": "0.2.22",
+  "version": "0.2.25",
   "description": "CLI tool that accelerate Node/UI development",
   "keywords": [],
   "author": "Cloud Le",
