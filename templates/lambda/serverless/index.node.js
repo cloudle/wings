@@ -1,10 +1,11 @@
 import morgan from 'morgan';
-import { greet, } from './src/greeting';
 import configs from './lambda/configs';
 
 global.env = Object.keys(configs).reduce((a, i) => {
 	a[i] = configs[i](); return a;
 }, {});
+
+const { greet, } = require('./src/greeting');
 
 export const configureServer = (server) => {
 	server.use(morgan('dev'));

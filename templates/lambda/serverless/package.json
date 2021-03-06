@@ -5,7 +5,8 @@
   "main": "index.node.js",
   "scripts": {
     "build": "rm -rf ./lambda/commonjs && bob build",
-    "deploy": "yarn build && cd lambda && serverless deploy && cd ..",
+    "deploy": "yarn build && cd lambda && yarn install && serverless deploy && cd ..",
+    "destroy": "cd lambda && serverless remove",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,13 +14,13 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.10.4",
-    "aws-sdk": "^2.828.0",
-    "metro-react-native-babel-preset": "^0.60.0",
-    "morgan": "^1.10.0"
-  },
-  "dependencies": {
+    "@babel/preset-env": "^7.10.4",
+    "@babel/preset-flow": "^7.10.4",
+    "@react-native-community/bob": "^0.16.2",
     "body-parser": "^1.19.0",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "aws-sdk": "^2.828.0",
+    "morgan": "^1.10.0"
   },
   "@react-native-community/bob": {
     "source": "src",
