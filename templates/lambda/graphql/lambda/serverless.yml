@@ -57,14 +57,14 @@ functions:
       - http:
           path: graphql
           method: get
-          cors:
-            origin: "*"
-            headers:
-              - Content-Type
-              - X-Amz-Date
-              - X-Amz-Security-Token
-              - X-Amz-User-Agent
-              - Authorization
-              - Access-Control-Allow-Headers
-              - Access-Control-Allow-Origin
-            allowCredentials: true
+        cors:
+          origin: "*"
+          headers:
+            - Content-Type
+            - X-Amz-Date
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+            - Authorization
+            - Access-Control-Allow-Headers
+            - Access-Control-Allow-Origin
+          allowCredentials: true
