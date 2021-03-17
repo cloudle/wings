@@ -1,4 +1,3 @@
-import 'setimmediate';
 import { AppRegistry, } from 'react-native';
 import App from './src';
 

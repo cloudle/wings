@@ -10,17 +10,17 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@react-native-community/async-storage": "^1.12.1",
 		"react": "^17.0.1",
+		"react-art": "^17.0.1",
 		"react-dom": "^17.0.1",
 		"react-native": "^0.63.0",
-		"react-native-web": "^0.13.3",
-		"react-universal-ui": "^1.0.78",
-		"react-native-reanimated": "^1.13.2",
+		"react-native-reanimated": "^2.0.0",
 		"react-native-svg": "^12.1.0",
-		"setimmediate": "^1.0.5"
+		"react-native-web": "^0.15.0"
 	},
 	"devDependencies": {
-		"metro-react-native-babel-preset": "^0.60.0",
-		"babel-plugin-module-resolver": "^4.1.0"
+		"babel-plugin-module-resolver": "^4.1.0",
+		"metro-react-native-babel-preset": "^0.60.0"
 	}
 }

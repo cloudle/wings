@@ -1,23 +1,22 @@
 import React, { useState, } from 'react';
-import { StyleSheet, View, Text, } from 'react-native';
-import { Button, } from 'react-universal-ui';
+import { StyleSheet, View, TouchableOpacity, Text, } from 'react-native';
 
 type Props = {
 
 };
 
 function App(props: Props) {
-	const [counter, setCounter] = useState(1);
+	const [counter, setCounter] = useState(0);
 	const increaseCounter = () => setCounter(counter + 1);
 
-	return <View style={styles.container}>
-		<Text style={styles.headingText}>Welcome!</Text>
+	return <TouchableOpacity
+		style={styles.container}
+		onPress={increaseCounter}>
+		<Text style={styles.headingText}>
+			Welcome {counter > 0 && counter}
+		</Text>
 		<Text>Edit src/index.js to see changes</Text>
-		<Button
-			wrapperStyle={styles.buttonWrapper}
-			onPress={increaseCounter}
-			title={`Counter: [${counter}]`}/>
-	</View>;
+	</TouchableOpacity>;
 }
 
 export default App;
