@@ -20,6 +20,7 @@
     "setimmediate": "^1.0.5"
   },
   "devDependencies": {
-    "metro-react-native-babel-preset": "^0.60.0"
+    "metro-react-native-babel-preset": "^0.60.0",
+    "babel-plugin-module-resolver": "^4.1.0"
   }
 }

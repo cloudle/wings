@@ -41,7 +41,7 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 	];
 	const reactAvailable = moduleExist('react');
 	const hot = [
-		resolve(__dirname, '../../node_modules', `webpack-dev-server/client?${publicPath}`),
+		`${resolve(__dirname, '../../node_modules', 'webpack-dev-server')}/client?${publicPath}`,
 		resolve(__dirname, '../../node_modules', 'webpack/hot/only-dev-server'),
 	];
 	const babelPlugins = [];
