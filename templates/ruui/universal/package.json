@@ -1,26 +1,34 @@
 {
-  "name": "wings-ruui-universal",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.node.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-native": "^0.63.0",
-    "react-native-web": "^0.13.3",
-    "react-universal-ui": "^1.0.78",
-    "react-native-reanimated": "^1.13.2",
-    "react-native-svg": "^12.1.0",
-    "setimmediate": "^1.0.5"
-  },
-  "devDependencies": {
-    "metro-react-native-babel-preset": "^0.60.0",
-    "babel-plugin-module-resolver": "^4.1.0"
-  }
+	"name": "wings-ruui-universal",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.web.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@react-native-community/async-storage": "^1.12.1",
+		"history": "^5.0.0",
+		"react": "^17.0.1",
+		"react-art": "^17.0.1",
+		"react-dom": "^17.0.1",
+		"react-native": "^0.63.0",
+		"react-native-reanimated": "^2.0.0",
+		"react-native-safe-area-context": "^3.2.0",
+		"react-native-svg": "^12.1.0",
+		"react-native-web": "^0.15.0",
+		"react-redux": "^7.2.2",
+		"react-router": "^6.0.0-beta.0",
+		"react-router-dom": "^6.0.0-beta.0",
+		"react-router-native": "^6.0.0-beta.0",
+		"redux": "^4.0.5",
+		"redux-saga": "^1.1.3"
+	},
+	"devDependencies": {
+		"babel-plugin-module-resolver": "^4.1.0",
+		"metro-react-native-babel-preset": "^0.60.0"
+	}
 }

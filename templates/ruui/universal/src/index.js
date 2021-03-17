@@ -1,38 +1,34 @@
-import React, { useState, } from 'react';
-import { StyleSheet, View, Text, } from 'react-native';
-import { Button, } from 'react-universal-ui';
+import React, { Fragment, } from 'react';
+import { Provider, } from 'react-redux';
+import { SafeAreaProvider, } from 'react-native-safe-area-context';
+
+import Dashboard from 'routes/Dashboard';
+import { Router, } from 'utils/router';
+import { useRoutes, } from 'utils/effect';
+import { store, } from 'store';
 
 type Props = {
 
 };
 
-function App(props: Props) {
-	const [counter, setCounter] = useState(1);
-	const increaseCounter = () => setCounter(counter + 1);
+const App = (props: Props) => {
+	const routedElement = useRoutes([{
+		path: '/*', element: <Dashboard/>,
+	}]);
 
-	return <View style={styles.container}>
-		<Text style={styles.headingText}>Welcome!</Text>
-		<Text>Edit src/index.js to see changes</Text>
-		<Button
-			wrapperStyle={styles.buttonWrapper}
-			onPress={increaseCounter}
-			title={`Counter: [${counter}]`}/>
-	</View>;
-}
+	return <Fragment>
+		{routedElement}
+	</Fragment>;
+};
 
-export default App;
+const AppContainer = () => {
+	return <Provider store={store}>
+		<SafeAreaProvider>
+			<Router>
+				<App/>
+			</Router>
+		</SafeAreaProvider>
+	</Provider>;
+};
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	headingText: {
-		fontSize: 20,
-		marginBottom: 10,
-	},
-	buttonWrapper: {
-		marginTop: 10,
-	},
-});
+export default AppContainer;

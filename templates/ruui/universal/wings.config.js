@@ -1,24 +1,33 @@
-const { resolve, } = require('path');
+const splitBundle = (configs, globalModules) => {
+	configs.entry = {
+		app: {
+			...configs.entry.app,
+			dependOn: 'react-core',
+		},
+		'react-core': {
+			import: [
+				'react',
+				'react-dom',
+				'react-native',
+				'react-art',
+				'@react-native-community/async-storage',
+			],
+		}
+	};
 
-const emptyWebpackMiddleware = (webpackConfig, globalModules) => {
-	return webpackConfig;
+	return configs;
 };
 
-module.exports = {
-	publicPath: (isProduction, env) => isProduction ? '/' : 'http://localhost:3000/',
-	webpackConfigs: [emptyWebpackMiddleware],
-	moduleAlias: (isProduction) => {
-		const src = isProduction ? 'dist' : 'src';
 
+module.exports = {
+	webpackConfigs: [
+		splitBundle,
+	],
+	moduleAlias: (isProduction) => {
 		return {
 			global: {
 				'react-native': 'react-native-web',
-				'react-native-linear-gradient': 'react-native-web-linear-gradient',
-				'react-native-iphone-x-helper': resolve(process.cwd(), `${src}/compatible/x-helper.js`),
 			},
-			node: {
-				'react-native-svg': resolve(process.cwd(), 'node_modules/react-native-svg/lib/commonjs/ReactNativeSVG.web.js'),
-			}
 		};
 	},
 };
