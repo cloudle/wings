@@ -47,6 +47,10 @@ export default {
 				if (error) { console.log(error); return; }
 				const lastBuildPath = resolve(process.cwd(), `${staticPath}/${buildJson.buildId}.js`);
 
+				if (wingsConfig.buildCleanUp) {
+					wingsConfig.buildCleanUp(buildJson.buildId);
+				}
+
 				if (!keepPreviousBuild && fs.existsSync(lastBuildPath)) {
 					fs.unlinkSync(lastBuildPath);
 					console.log(`${chalk.gray('｢wings｣')} ${chalk.gray('clean up previous build')} ${chalk.red(buildJson.buildId)}${chalk.gray('.js')}`);
