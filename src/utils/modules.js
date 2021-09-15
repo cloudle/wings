@@ -53,6 +53,7 @@ const defaultWingsConfig = {
 		node: {},
 	}),
 	keepPreviousBuild: (isProduction) => false,
+	buildCleanUp: () => {},
 	ejsTemplate: getEjsTemplate(),
 	htmlOptions: {},
 	publicPath: (isProduction, env) => '/',

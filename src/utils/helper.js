@@ -33,8 +33,8 @@ export const requireModule = (directions, req = require) => {
 
 export const resolveModule = directions => requireModule(directions, require.resolve);
 
-export const webEntries = ['index.web.js', 'index.js', ];
-export const nodeEntries = ['index.node.js', 'server.js', 'node.js', ];
+export const webEntries = ['index.web.js', 'index.js', 'index.ts', 'index.web.ts'];
+export const nodeEntries = ['index.node.js', 'server.js', 'node.js', 'index.node.ts', 'server.ts', 'node.ts'];
 
 export const guessEntry = (searchList = webEntries) => {
 	for (let i = 0; i < searchList.length; i += 1) {

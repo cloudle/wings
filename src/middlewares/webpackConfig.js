@@ -90,11 +90,11 @@ export const defaultWebpackConfigMiddleware = (config, globals) => {
 			mainFields: ['browser', 'main', 'module'],
 			alias: { ...alias.global, ...alias.web, },
 			modules: [process.cwd(), 'node_modules'],
-			extensions: ['.web.js', '.js'],
+			extensions: ['.web.js', '.js', '.web.jsx', '.jsx', '.ts', '.tsx'],
 		},
 		module: {
 			rules: [{
-				test: /\.js?$/,
+				test: /\.(ts|js)x?$/,
 				loader: 'babel-loader',
 				options: {
 					compact: false,
