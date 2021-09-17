@@ -1,4 +1,4 @@
-require('@babel/register');
+require('@babel/register')({ extensions: ['.js', '.ts'] });
 
 import path from 'path';
 import chokidar from 'chokidar';
