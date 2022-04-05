@@ -1,6 +1,6 @@
 {
   "name": "wings-cli",
-  "version": "0.2.35",
+  "version": "0.2.37",
   "description": "CLI tool that accelerate Node/UI development",
   "keywords": [],
   "author": "Cloud Le",
@@ -48,7 +48,7 @@
     "@babel/plugin-proposal-class-properties": "^7.12.1",
     "@babel/preset-flow": "^7.12.1",
     "@babel/register": "^7.12.10",
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.2",
     "axios": "^0.21.1",
     "babel-loader": "^8.2.2",
     "body-parser": "^1.19.0",
@@ -74,7 +74,7 @@
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.1.1",
     "uuid": "^3.3.3",
-    "webpack": "^5.23.0",
+    "webpack": "^5.64.2",
     "webpack-dev-server": "^3.11.2"
   }
 }
